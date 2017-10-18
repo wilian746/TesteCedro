@@ -1,0 +1,36 @@
+{
+  "name": "TesteCedro",
+  "version": "1.0.0",
+  "repository": {
+    "type": "git",
+    "url": ""
+  },
+  "engines": {
+    "node": "^5.9.1"
+  },
+  "main": "server.js",
+  "scripts": {
+    "start": "nodemon server.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "nodemon": "^1.11.0"
+  },
+  "dependencies": {
+    "bcrypt-nodejs": "0.0.3",
+    "body-parser": "^1.17.1",
+    "compression": "^1.6.2",
+    "cors": "^2.8.3",
+    "dotenv": "^4.0.0",
+    "errorhandler": "^1.5.0",
+    "express": "^4.15.2",
+    "jsonwebtoken": "^7.3.0",
+    "moment": "^2.18.1",
+    "mongoose": "^4.11.11",
+    "morgan": "^1.8.1",
+    "passport": "^0.3.2",
+    "passport-jwt": "^2.2.1",
+    "passport-local": "^1.0.0"
+  }
+}
