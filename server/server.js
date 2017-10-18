@@ -1,28 +1,25 @@
-/**
- * Module dependencies.
- */
-const express = require('express');
-const compression = require('compression');
-const bodyParser = require('body-parser');
-const logger = require('morgan');
-const errorHandler = require('errorhandler');
-const dotenv = require('dotenv');
-const mongoose = require('mongoose');
-const cors = require('cors');
+const express = require('express'); // framework para inicializar um servidor de roteamento para desenvolver aplicações web
+const compression = require('compression'); // compactar Gzip diminuindo o corpo de resposta e aumentar a velocidade da aplicação.
+const bodyParser = require('body-parser'); // Retorna ao middleware que so analisa o json
+const logger = require('morgan'); // logger para registrar as requisições no servidor
+const errorHandler = require('errorhandler'); // manipulador de erros para aplicações Express
+const dotenv = require('dotenv'); // modulo de dependencia que carrega variaveis de ambiente de um arquivo
+const mongoose = require('mongoose'); // mongoose é uma biblioteca que contem mapeamento de objetos do MongoDB similar ao ORM
+const cors = require('cors');  // biblioteca que faz a conexão com o express
 
 /**
- * Load environment variables from .env file, where API keys and passwords are configured.
+ * Carrega variaveis do arquivo .env, onde contem chaves, senhas da API.
  */
 dotenv.load({path: '.env'});
 
 /**
- * Create Express server.
+ * Cria Server Express
  */
 const app = express();
 const server = require("http").Server(app);
 
 /**
- * Express, cors, logger, compression configuration.
+ * Express, cors, logger, compression configurações.
  */
 app.set('port', process.env.PORT || 3000);
 app.use(compression());
@@ -35,13 +32,13 @@ app.use(cors({
 app.use(errorHandler());
 
 /**
- * Init body and cookie inside req
+ * Iniciar body e cookie dentro do req
  * */
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
 
 /**
- * Connect to MongoDB.
+ * Conexão com o MongoDB.
  */
 mongoose.connect(process.env.MONGODB_URI);
 mongoose.connection.on('error', function () {
@@ -50,12 +47,13 @@ mongoose.connection.on('error', function () {
 });
 
 /**
+ * Carregar modules e rotas do app
  * Load app modules and routes
  */
 const router = require('./src/app/routes/api')(app);
 
 /**
- * Start Express server.
+ * Iniciar Express server.
  */
 server.listen(app.get('port'), function () {
     console.log('Servidor rodando na porta ' + app.get('port') + ' em modo ' + app.get('env'));
