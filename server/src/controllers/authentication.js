@@ -13,7 +13,7 @@ function generateToken(user) {
     });
 }
 
-function pegarInformacoesDaRequisicao(request) {
+function pegarInformacoesDaRequisicaoUser(request) {
     return {
         _id: request._id,
         nome: request.nome,
@@ -22,7 +22,7 @@ function pegarInformacoesDaRequisicao(request) {
 }
 
 exports.login = function (req, res, next) {
-    var InformacoesDoUsuario = pegarInformacoesDaRequisicao(req.user);
+    var InformacoesDoUsuario = pegarInformacoesDaRequisicaoUser(req.user);
 
     res.status(200).json({
         token: 'JWT ' + generateToken(InformacoesDoUsuario),
@@ -30,7 +30,6 @@ exports.login = function (req, res, next) {
         user: InformacoesDoUsuario
     });
 };
-
 
 exports.registroDeUsuario = function (req, res, next) {
     var nome = req.body.nome;
@@ -69,7 +68,7 @@ exports.registroDeUsuario = function (req, res, next) {
                 return next(err);
             }
 
-            var userInfo = pegarInformacoesDaRequisicao(user);
+            var userInfo = pegarInformacoesDaRequisicaoUser(user);
 
             res.status(201).json({
                 token: 'JWT ' + generateToken(userInfo),
@@ -80,50 +79,4 @@ exports.registroDeUsuario = function (req, res, next) {
     });
 };
 
-exports.registroDeProduto = function (req, res, next) {
-    var name = req.body.name;
-    var email = req.body.email;
-    var password = req.body.password;
 
-    if (!name) {
-        return res.status(422).send({error: 'Você deve informar seu nome e sobrenome'});
-    }
-
-    if (!email) {
-        return res.status(422).send({error: 'Você deve digitar um e-mail'});
-    }
-
-    if (!password) {
-        return res.status(422).send({error: 'Você deve digitar uma senha'});
-    }
-
-    User.findOne({email: email}, function (err, jaExisteAlgumUser) {
-        if (err) {
-            return next(err);
-        }
-
-        if (jaExisteAlgumUser) {
-            return res.status(422).send({error: 'Esse e-mail já esta em uso'});
-        }
-
-        var user = new User({
-            name: name,
-            email: email,
-            password: password
-        });
-
-        user.save(function (err, user) {
-            if (err) {
-                return next(err);
-            }
-
-            var userInfo = pegarInformacoesDaRequisicao(user);
-
-            res.status(201).json({
-                token: 'JWT ' + generateToken(userInfo),
-                user: userInfo
-            })
-
-        });
-    });
-};
