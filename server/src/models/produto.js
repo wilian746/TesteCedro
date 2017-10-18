@@ -14,6 +14,10 @@ var UserSchema = new mongoose.Schema({
         lowercase: true,
         required: [true, 'Informe o preço do produto']
     },
+    id_user: {
+        type: mongoose.Schema.ObjectId,
+        required: true
+    }
 }, {timestamps: true});
 
 
