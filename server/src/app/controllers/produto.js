@@ -2,8 +2,8 @@
 const mongoose = require('mongoose');
 const moment = require('moment');
 moment.locale('pt-BR');
-const Produto = require('../models/produto'); 
 
+const Produto = require('../models/produto');
 
 function sortAndOrderBy(sort, orderBy) {
     if (sort) {
@@ -32,9 +32,18 @@ function sortAndOrderBy(sort, orderBy) {
     return sortObj;
 }
 
+exports.getAllProdutos = function (req, res, next) {
+// GET todos os Produtos
+};
+
+exports.getProdutos = function (req, res, next) {
+// GET apenas um Produto
+};
+
+
 exports.registroDeProduto = function (req, res, next) {
-    if (req.user.role !== 'admin') {
-        res.status(401).send({message: 'Você não está autorizado a cadastrar produto'});
+    if (req.user.autorizacao !== 'admin') {
+        res.status(401).send({message: 'Você não está autorizado a cadastrar Produto'});
         return next('Não autorizado');
     }
 
@@ -45,7 +54,7 @@ exports.registroDeProduto = function (req, res, next) {
         id_user: req.user._id
     }, function (err, produto) {
         if (err)
-            return res.status(500).send({message: 'Erro ao criar produto', error: err});
+            return res.status(500).send({message: 'Erro ao criar Produto', error: err});
 
         res.status(201).send({
             message: 'Produto criado com sucesso',
@@ -54,56 +63,45 @@ exports.registroDeProduto = function (req, res, next) {
     });
 };
 
-
 exports.update = function (req, res, next) {
     var optionsObj = {
         new: true,
         upsert: true
     };
-
+    
     Produto.findByIdAndUpdate(req.params.id_produto, {$set: req.body}, optionsObj, function (err, updateProduto) {
         if (err)
-            return res.status(500).send({message: 'Erro ao atualizar projeto', error: err});
+            return res.status(500).send({message: 'Erro ao atualizar Produto', error: err});
 
-        if (updateProject.id_user.toString() !== req.user._id.toString() && req.user.role !== 'admin') {
-            res.status(401).send({message: 'Você não está autorizado a modificar este projeto'});
+        if (updateProduto.id_user.toString() !== req.user._id.toString() && req.user.autorizacao !== 'admin') {
+            res.status(401).send({message: 'Você não está autorizado a modificar este Produto'});
             return next('Não autorizado');
         }
 
         res.status(200).send({
-            message: 'Projeto atualizado com sucesso',
-            project: updateProject
+            message: 'Produto atualizado com sucesso',
+            produto: updateProduto
         });
     });
 };
 
 exports.delete = function (req, res, next) {
-    const id_project = req.params.id_project;
+    const id_produto = req.params.id_produto;
 
-    Project.findById(id_project, function (err, foundProject) {
+    Produto.findById(id_produto, function (err, foundProduto) {
         if (err)
-            res.status(422).send({message: 'Projeto não encontrado', error: err});
+            res.status(422).send({message: 'Produto não encontrado', error: err});
 
-        if (foundProject.id_user.toString() !== req.user._id.toString() && req.user.role !== 'admin') {
-            res.status(401).send({message: 'Você não está autorizado a excluir este projeto'});
+        if (foundProduto.id_user.toString() !== req.user._id.toString() && req.user.autorizacao !== 'admin') {
+            res.status(401).send({message: 'Você não está autorizado a excluir este Produto'});
             return next('Não autorizado');
         }
 
-        Project.remove({_id: id_project}, function (err, deleted) {
+        Produto.remove({_id: id_produto}, function (err, deleted) {
             if (err)
-                return res.status(500).send({message: 'Erro ao excluir projeto', error: err});
-
-            Story.remove({id_project: id_project}, function (err, deleted) {
-                if (err)
-                    return res.status(500).send({message: 'Projeto excluído mas com erro ao excluir estória', error: err});
-
-                StoryVoted.remove({id_project: id_project}, function (err, deleted) {
-                    if (err)
-                        return res.status(500).send({message: 'Projeto e Estórias foram excluídos mas teve erro ao excluir as cartas votadas no projeto.', error: err});
-
-                    return res.status(200).send({message: 'Projeto excluído com sucesso'});
-                });
-            });
+                return res.status(500).send({message: 'Erro ao excluir Produto', error: err});
+            else
+                return res.status(200).send({message: 'Produto excluído com sucesso'});
         });
     });
 };

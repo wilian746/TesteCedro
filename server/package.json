@@ -1,12 +1,12 @@
 {
-  "name": "TesteCedro",
+  "name": "petHelper",
   "version": "1.0.0",
   "repository": {
     "type": "git",
     "url": ""
   },
   "engines": {
-    "node": "^5.9.1"
+    "node": "5.9.1"
   },
   "main": "server.js",
   "scripts": {
@@ -28,9 +28,11 @@
     "jsonwebtoken": "^7.3.0",
     "moment": "^2.18.1",
     "mongoose": "^4.11.11",
-    "morgan": "^1.8.1", 
+    "morgan": "^1.8.1",
+    "node-wit": "^4.3.0",
     "passport": "^0.3.2",
     "passport-jwt": "^2.2.1",
-    "passport-local": "^1.0.0"
+    "passport-local": "^1.0.0",
+    "socket.io": "^2.0.1"
   }
 }

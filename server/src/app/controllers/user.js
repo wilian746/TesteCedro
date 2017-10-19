@@ -16,9 +16,36 @@ function sortAndOrderBy(keySort, keyOrderBy) {
 }
 
 exports.getAllUsers = function (req, res, next) {
-//rota para trazer todos os usuarios
+    const sortObj = sortAndOrderBy(req.query.sort, req.query.orderBy);
+    const limit = req.query.limit;
+    const skip = req.query.skip;
+    const select = req.query.select;
+
+    const search = {};
+    search[req.query.key] = req.query.text;
+
+    var query = User.find(search)
+        .sort(sortObj)
+        .limit(Number(limit))
+        .skip(Number(skip))
+        .select(select);
+
+    query.exec(function (err, users) {
+        if (err)
+            return res.status(500).send({error: err});
+
+        return res.status(200).json(users);
+    });
 };
 
 exports.getUser = function (req, res, next) {
-//rota para trazer apenas 1 usuario
+    const select = req.query.select;
+
+    var query = User.findById(req.params.id_user).select(select);
+    query.exec(function (err, users) {
+        if (err)
+            return res.status(500).send({message: 'Nenhum usuário foi encontrado', error: err});
+
+        return res.status(200).json(users);
+    });
 };

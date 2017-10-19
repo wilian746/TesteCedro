@@ -18,6 +18,11 @@ var UserSchema = new mongoose.Schema({
     senha: {
         type: String,
         required: [true, 'Uma senha deve ser informada']
+    },
+    autorizacao:{
+        type: String,
+        enum: ['user', 'admin'],
+        default: 'user'
     }
 }, {timestamps: true});
 
@@ -28,7 +33,7 @@ UserSchema.pre('save', function (next) {
     // Verifica se o hash da senha foi modificado (ou é novo)
     if (!user.isModified('senha')) return next();
 
-    // Gera o Salt para fazer a criptografia da senha
+    // Gera o Salt
     bcrypt.genSalt(SALT_FACTOR, function (err, salt) {
         if (err) return next(err);
 
@@ -43,13 +48,12 @@ UserSchema.pre('save', function (next) {
     });
 });
 
-//verifica se a senha é igual
-UserSchema.methods.compareSenha = function (senhaAttempt, cb) {
+UserSchema.methods.compareSenhaDoLogin = function (senhaAttempt, tipoResposta) {
     bcrypt.compare(senhaAttempt, this.senha, function (err, isMatch) {
         if (err) {
-            return cb(err);
+            return tipoResposta(err);
         } else {
-            cb(null, isMatch);
+            tipoResposta(null, isMatch);
         }
     });
 };

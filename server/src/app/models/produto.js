@@ -1,18 +1,17 @@
 var mongoose = require('mongoose');
 
-var UserSchema = new mongoose.Schema({
+var ProdutoSchema = new mongoose.Schema({
     nome: {
         type: String,
         required: [true, 'Informe o nome do produto']
     },
     descricao: {
         type: String,
-        required: [true, 'Informe a Descrição do produto']
+        required: [true, 'Uma descrição para o produto deve ser informado'],
     },
     preco: {
-        type: Number,
-        lowercase: true,
-        required: [true, 'Informe o preço do produto']
+        type: String,
+        required: [true, 'Um preco deve ser informado']
     },
     id_user: {
         type: mongoose.Schema.ObjectId,

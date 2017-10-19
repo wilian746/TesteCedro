@@ -9,7 +9,7 @@ var localOptions = {
     usernameField: 'email'
 };
  
-var localLogin = new LocalStrategy(localOptions, function(email, password, done){
+var localLogin = new LocalStrategy(localOptions, function(email, senha, done){
     User.findOne({
         email: email
     }, function(err, user){
@@ -23,7 +23,7 @@ var localLogin = new LocalStrategy(localOptions, function(email, password, done)
             return done(null, false, content);
         }
 
-        user.comparePassword(password, function(err, isMatch){
+        user.compareSenhaDoLogin(senha, function(err, isMatch){
             if(err){
                 return done(err);
             }
