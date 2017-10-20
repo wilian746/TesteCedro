@@ -21,6 +21,7 @@ function setUserInfo(request) {
     };
 }
 
+
 exports.login = function (req, res, next) {
     var userInfo = setUserInfo(req.user);
     res.status(200).json({
@@ -36,6 +37,7 @@ exports.registroDeUsuario = function (req, res, next) {
     var email = req.body.email;
     var senha = req.body.senha;
     var autorizacao = req.body.autorizacao;
+    
     if (!nome) {
         return res.status(422).send({error: 'Você deve informar seu nome e sobrenome'});
     }

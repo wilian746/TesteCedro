@@ -5,6 +5,7 @@ moment.locale('pt-BR');
 
 const Produto = require('../models/produto');
 
+
 function sortAndOrderBy(sort, orderBy) {
     if (sort) {
         sort = sort.split(' ');
@@ -33,16 +34,50 @@ function sortAndOrderBy(sort, orderBy) {
 }
 
 exports.getAllProdutos = function (req, res, next) {
-// GET todos os Produtos
+    const sortObj = sortAndOrderBy(req.query.sort, req.query.orderBy);
+    const limit = req.query.limit;
+    const skip = req.query.skip;
+    const select = req.query.select;
+
+    const search = {};
+    search[req.query.key] = req.query.text;
+
+    var query = Produto.find(search)
+        .sort(sortObj)
+        .limit(Number(limit))
+        .skip(Number(skip))
+        .select(select);
+
+    query.exec(function (err, produtos) {
+        if (err)
+            return res.status(500).send({message: 'Erro ao buscar Produtos', error: err});
+
+        if (!produtos || !produtos.length)
+            return res.status(422).send({message: 'Nenhum produto foi encontradp'});
+
+        res.status(200).json(produtos);
+    });
 };
 
-exports.getProdutos = function (req, res, next) {
-// GET apenas um Produto
+exports.getProduto = function (req, res, next) {
+    const select = req.query.select;
+    
+        var query = Produto.find({$and: [{id_project: req.params.id_project}, {_id: req.params.id_produto}]}).select(select);
+        query.exec(function (err, produtos) {
+            if (err)
+                return res.status(500).send({message: 'Erro ao buscar produto', error: err});
+    
+            if (!produtos || !produtos.length)
+                return res.status(422).send({message: 'Nenhum produto foi encontrado'});
+    
+            return res.status(200).json(produtos);
+        });
 };
+
 
 
 exports.registroDeProduto = function (req, res, next) {
-    if (req.user.autorizacao !== 'admin') {
+    if (req.user.autorizacao === 'user') {
         res.status(401).send({message: 'Você não está autorizado a cadastrar Produto'});
         return next('Não autorizado');
     }
@@ -63,7 +98,7 @@ exports.registroDeProduto = function (req, res, next) {
     });
 };
 
-exports.update = function (req, res, next) {
+exports.updateDeProduto = function (req, res, next) {
     var optionsObj = {
         new: true,
         upsert: true
@@ -85,7 +120,7 @@ exports.update = function (req, res, next) {
     });
 };
 
-exports.delete = function (req, res, next) {
+exports.deleteDeProduto = function (req, res, next) {
     const id_produto = req.params.id_produto;
 
     Produto.findById(id_produto, function (err, foundProduto) {

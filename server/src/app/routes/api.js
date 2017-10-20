@@ -39,18 +39,18 @@ module.exports = function (app) {
         ),
 
         // User Routes
-        apiRoutes.use('/user',
+        /*apiRoutes.use('/user',
         userRoutes.get('/', requireAuth, UserController.getAllUsers),
         userRoutes.get('/:id_user', requireAuth, UserController.getUser)
         ),
-
+*/
         // Project Routes
         apiRoutes.use('/produto',
-        //produtoRoutes.get('/', requireAuth, ProdutoController.getAllProdutos),
-       // produtoRoutes.get('/:id_produto', requireAuth, ProdutoController.getProduto),
+        produtoRoutes.get('/', requireAuth, ProdutoController.getAllProdutos),
+        produtoRoutes.get('/:id_produto', requireAuth, ProdutoController.getProduto),
         produtoRoutes.post('/registroDeProduto', requireAuth, ProdutoController.registroDeProduto),
-        produtoRoutes.put('/:id_produto', requireAuth, ProdutoController.update),
-        produtoRoutes.delete('/:id_produto', requireAuth, ProdutoController.delete)
+        produtoRoutes.put('/:id_produto', requireAuth, ProdutoController.updateDeProduto),
+        produtoRoutes.delete('/:id_produto', requireAuth, ProdutoController.deleteDeProduto)
         )
 
         
