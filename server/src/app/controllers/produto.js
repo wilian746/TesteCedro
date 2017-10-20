@@ -53,7 +53,7 @@ exports.getAllProdutos = function (req, res, next) {
             return res.status(500).send({message: 'Erro ao buscar Produtos', error: err});
 
         if (!produtos || !produtos.length)
-            return res.status(422).send({message: 'Nenhum produto foi encontradp'});
+            return res.status(422).send({message: 'Nenhum produto foi encontrado'});
 
         res.status(200).json(produtos);
     });
@@ -108,11 +108,6 @@ exports.updateDeProduto = function (req, res, next) {
         if (err)
             return res.status(500).send({message: 'Erro ao atualizar Produto', error: err});
 
-        if (updateProduto.id_user.toString() !== req.user._id.toString() && req.user.autorizacao !== 'admin') {
-            res.status(401).send({message: 'Você não está autorizado a modificar este Produto'});
-            return next('Não autorizado');
-        }
-
         res.status(200).send({
             message: 'Produto atualizado com sucesso',
             produto: updateProduto
@@ -126,11 +121,6 @@ exports.deleteDeProduto = function (req, res, next) {
     Produto.findById(id_produto, function (err, foundProduto) {
         if (err)
             res.status(422).send({message: 'Produto não encontrado', error: err});
-
-        if (foundProduto.id_user.toString() !== req.user._id.toString() && req.user.autorizacao !== 'admin') {
-            res.status(401).send({message: 'Você não está autorizado a excluir este Produto'});
-            return next('Não autorizado');
-        }
 
         Produto.remove({_id: id_produto}, function (err, deleted) {
             if (err)
