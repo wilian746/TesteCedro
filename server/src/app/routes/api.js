@@ -39,11 +39,11 @@ module.exports = function (app) {
         ),
 
         // User Routes
-        /*apiRoutes.use('/user',
+        apiRoutes.use('/user',
         userRoutes.get('/', requireAuth, UserController.getAllUsers),
         userRoutes.get('/:id_user', requireAuth, UserController.getUser)
         ),
-*/
+
         // Project Routes
         apiRoutes.use('/produto',
         produtoRoutes.get('/', requireAuth, ProdutoController.getAllProdutos),
