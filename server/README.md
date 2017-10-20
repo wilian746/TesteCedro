@@ -106,5 +106,21 @@ $ PORT=9000
          min: 6
      }
 ```
+#### Listar produtos
+```bash
+{GET} /api/v1/produto/:id_project
+```
+
+- Para ordernar a busca por determinada key, acrescente o parametro `orderBy=NOME_DA_KEY` na url.
+
+- Para ordernar a busca em Ascendente ou Descendente, acrescente o parametro `sort=asc` para ordenar em Ascendente ou `sort=desc` para ordenar em Descendente.
+
+- Para limitar a quantidade de documentos a ser mostrado após a consulta, acrescente o parametro `limit=QUANTIDADE`.
+
+- Para pular uma determinada quantidade de documentos a ser mostrado após a consulta, acrescente o parametro `skip=QUANTIDADE`.
+
+- Para trazer apenas algumas keys do documento, acrescente o parametro `select=KEY1 KEY2`. Pode ser informada várias key desde que cada uma tenha um espaço entre elas.
+
+- Para buscar estórias, por determinada key do documento, acrescente o parametro `key=NOME_KEY&text=TEXTO_KEY`.
 
 

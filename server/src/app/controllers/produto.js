@@ -99,6 +99,10 @@ exports.registroDeProduto = function (req, res, next) {
 };
 
 exports.updateDeProduto = function (req, res, next) {
+    if (req.user.autorizacao === 'user') {
+        res.status(401).send({message: 'Você não está autorizado a fazer Update de Produto'});
+        return next('Não autorizado');
+    }
     var optionsObj = {
         new: true,
         upsert: true
@@ -116,6 +120,10 @@ exports.updateDeProduto = function (req, res, next) {
 };
 
 exports.deleteDeProduto = function (req, res, next) {
+    if (req.user.autorizacao === 'user') {
+        res.status(401).send({message: 'Você não está autorizado a Deletar Produto'});
+        return next('Não autorizado');
+    }
     const id_produto = req.params.id_produto;
 
     Produto.findById(id_produto, function (err, foundProduto) {

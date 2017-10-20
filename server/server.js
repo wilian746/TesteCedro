@@ -11,18 +11,18 @@ const mongoose = require('mongoose');
 const cors = require('cors');
 
 /**
- * Load environment variables from .env file, where API keys and passwords are configured.
+ * Carrega variaveis do arquivo .env, onde contém chaves da API
  */
 dotenv.load({path: '.env'});
 
 /**
- * Create Express server.
+ * Cria o server express.
  */
 const app = express();
 const server = require("http").Server(app);
 
 /**
- * Express, cors, logger, compression configuration.
+ * Express, cors, logger, compression configuração.
  */
 app.set('port', process.env.PORT || 3000);
 app.use(compression());
@@ -35,13 +35,13 @@ app.use(cors({
 app.use(errorHandler());
 
 /**
- * Init body and cookie inside req
+ * Inicia body e cookie dentro de req
  * */
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
 
 /**
- * Connect to MongoDB.
+ * Conexão com MongoDB.
  */
 mongoose.connect(process.env.MONGODB_URI);
 mongoose.connection.on('error', function () {
@@ -51,12 +51,12 @@ mongoose.connection.on('error', function () {
 
 
 /**
- * Load app modules and routes
+ * Carregar App Modules e Rotas
  */
 const router = require('./src/app/routes/api')(app);
 
 /**
- * Start Express server.
+ * Começa Express server.
  */
 server.listen(app.get('port'), function () {
     console.log('Servidor rodando na porta ' + app.get('port') + ' em modo ' + app.get('env'));
