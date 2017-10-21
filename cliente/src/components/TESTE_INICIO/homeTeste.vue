@@ -27,3 +27,4 @@
 <script src="./home.js"></script>
 
 <style scoped src="./home.scss"></style>
+

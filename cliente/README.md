@@ -1,4 +1,4 @@
-# testecedro
+# Teste Cedro
 
 > A Vue.js project
 

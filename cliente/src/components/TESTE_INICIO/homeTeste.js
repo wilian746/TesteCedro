@@ -3,7 +3,7 @@ const API_Produto = API + "produto/";
 const API_Login = API + "auth/login";
 
 export default {
-    name: 'Home',
+    name: 'home',
     data: () => ({
         email:null,
         password:null,
