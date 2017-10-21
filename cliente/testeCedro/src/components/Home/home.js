@@ -1,23 +1,28 @@
+const API = "http://localhost:9000/api/v1/";
+const API_Produto = API + "produto/";
+const API_Login = API + "auth/login";
+
 export default {
     name: 'Home',
     data: () => ({
-        drawer: true,
-        items: [
-        { icon: 'trending_up', text: 'Most Popular' },
-        { icon: 'subscriptions', text: 'Subscriptions' },
-        { icon: 'history', text: 'History' },
-        { icon: 'featured_play_list', text: 'Playlists' },
-        { icon: 'watch_later', text: 'Watch Later' }
-        ],
-        items2: [
-        { picture: 28, text: 'Joseph' },
-        { picture: 38, text: 'Apple' },
-        { picture: 48, text: 'Xbox Ahoy' },
-        { picture: 58, text: 'Nokia' },
-        { picture: 78, text: 'MKBHD' },
-        ]
+        email:null,
+        password:null,
+        produtos:[]
     }),
-    props: {
-        source: String
+    methods:{
+        getProduto(){
+            this.axios.get(API_Produto).then((response) => {
+                this.produtos = response.data;
+              })
+        },
+        login(){
+            let credentials = {email: this.email, password: this.password}
+            this.axios.post(API_Login, credentials).then((response) => {
+                console.log(response.data);
+              })
+        }
+    },
+    created(){
+      
     }
 }

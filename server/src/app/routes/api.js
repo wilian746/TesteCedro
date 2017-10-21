@@ -46,7 +46,7 @@ module.exports = function (app) {
 
         // Project Routes
         apiRoutes.use('/produto',
-        produtoRoutes.get('/', requireAuth, ProdutoController.getAllProdutos),
+        produtoRoutes.get('/', ProdutoController.getAllProdutos),
         produtoRoutes.get('/:id_produto', requireAuth, ProdutoController.getProduto),
         produtoRoutes.post('/registroDeProduto', requireAuth, ProdutoController.registroDeProduto),
         produtoRoutes.put('/:id_produto', requireAuth, ProdutoController.updateDeProduto),

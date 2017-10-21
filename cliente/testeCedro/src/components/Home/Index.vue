@@ -1,65 +1,26 @@
 <template>
-<v-app
-    dark
-    id="inspire"
->
- <v-navigation-drawer
-      persistent
-      clipped
-      enable-resize-watcher
-      v-model="drawer"
-      app
-    >
-      <v-list dense>
-        <v-list-tile v-for="item in items" :key="item.text" @click="">
-          <v-list-tile-action>
-            <v-icon>{{ item.icon }}</v-icon>
-          </v-list-tile-action>
-          <v-list-tile-content>
-            <v-list-tile-title>
-              {{ item.text }}
-            </v-list-tile-title>
-          </v-list-tile-content>
-        </v-list-tile>
-        <v-subheader class="mt-3 grey--text text--darken-1">SUBSCRIPTIONS</v-subheader>
-        <v-list>
-          <v-list-tile v-for="item in items2" :key="item.text" avatar @click="">
-            <v-list-tile-avatar>
-              <img :src="`https://randomuser.me/api/portraits/men/${item.picture}.jpg`" alt="">
-            </v-list-tile-avatar>
-            <v-list-tile-title v-text="item.text"></v-list-tile-title>
-          </v-list-tile>
-        </v-list>
-        <v-list-tile class="mt-3" @click="">
-          <v-list-tile-action>
-            <v-icon color="grey darken-1">add_circle_outline</v-icon>
-          </v-list-tile-action>
-          <v-list-tile-title class="grey--text text--darken-1">Browse Channels</v-list-tile-title>
-        </v-list-tile>
-        <v-list-tile @click="">
-          <v-list-tile-action>
-            <v-icon color="grey darken-1">settings</v-icon>
-          </v-list-tile-action>
-          <v-list-tile-title class="grey--text text--darken-1">Manage Subscriptions</v-list-tile-title>
-        </v-list-tile>
-      </v-list>
-    </v-navigation-drawer>
-    <v-toolbar color="red" dense fixed clipped-left app>
-      <v-toolbar-title style="width: 300px" class="ml-0 pl-3">
-        <v-toolbar-side-icon @click.stop="drawer = !drawer"></v-toolbar-side-icon>
-        <v-icon class="ml-3">fa-youtube</v-icon>
-      </v-toolbar-title>
-      <v-layout row align-center style="max-width: 650px">
-        <v-text-field
-          placeholder="Search..."
-          single-line
-          append-icon="search"
-          :append-icon-cb="() => {}"
-          class="white--text"
-          hide-details
-        ></v-text-field>
-      </v-layout>
-    </v-toolbar>
+<v-app>
+    <v-form>
+    <v-text-field
+      label="email"
+      v-model="email"
+      required
+    ></v-text-field>
+    <v-text-field
+      label="password"
+      v-model="password"
+      required
+    ></v-text-field>
+    </v-form>
+    <v-btn color="primary" @click="login()">Login</v-btn>
+    <v-btn color="primary" @click="getProduto()">Produto</v-btn>
+    <v-list>
+          <template v-for="(produto,index) in produtos">
+            <v-list-tile v-bind:key="produto._id">
+              {{produto.nome}}
+            </v-list-tile>
+          </template>
+    </v-list>
 </v-app>
 </template>
 
