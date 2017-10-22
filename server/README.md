@@ -108,7 +108,7 @@ $ PORT=9000
 ```
 #### Listar produtos
 ```bash
-{GET} /api/v1/produto/:id_project
+{GET} /api/v1/produto/:id_produto
 ```
 
 - Para ordernar a busca por determinada key, acrescente o parametro `orderBy=NOME_DA_KEY` na url.

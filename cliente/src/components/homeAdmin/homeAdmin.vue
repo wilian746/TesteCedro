@@ -1,20 +1,30 @@
 <template>
   <v-layout column>
-      <v-toolbar color="indigo" dark>
-        <v-menu style="width: 150px" right>
-          <v-btn icon slot="activator" dark>
-            <v-icon>more_vert</v-icon>
-          </v-btn>
-          <v-list >
-            <v-list-tile v-for="item in items" :key="item.title">
-              <v-list-tile-title>{{ item.title }}</v-list-tile-title>
-            </v-list-tile>
-          </v-list>
-        </v-menu>
+      <v-toolbar color="primary" dark>
+        <v-toolbar-title>Cedro Tech
+           {{this.$store.getters.getToken}}
+        </v-toolbar-title>
         <v-spacer></v-spacer>
-        <v-toolbar-title>Cedro Tech</v-toolbar-title>
-        <v-btn @click="getProduto()" icon>
-          <v-icon>search</v-icon>
+        <v-dialog persistent max-width="500px">
+            <v-btn dark slot="activator">CADASTRAR PRODUTO</v-btn>
+            <v-card color="grey lighten-4">
+              <v-container grid-list-md>
+                <v-layout wrap>
+                  <v-flex xs12 >
+                    <v-form>
+                      <v-text-field label="Nome" v-model="nomeProduto" required></v-text-field>
+                      <v-text-field label="Descricao" v-model="descricaoProduto" required></v-text-field>
+                      <v-text-field label="Preco" v-model="precoProduto" required></v-text-field>
+                    </v-form>
+                    <v-btn color="primary" @click="cadastrarProduto()">Cadastrar</v-btn>
+                  </v-flex>
+                </v-layout>
+              </v-container>
+            </v-card>
+          </v-dialog>
+        <v-spacer></v-spacer>
+        <v-btn @click="sairParaPaginaPrincipal()">
+          SAIR
         </v-btn>
       </v-toolbar>
       <v-container fluid grid-list-md class="grey lighten-4">
@@ -44,7 +54,7 @@
                         <v-btn fab dark small color="green">
                             <v-icon>edit</v-icon>
                         </v-btn>
-                        <v-btn fab dark small color="red">
+                        <v-btn fab dark small color="red" @click="deletarProdutoDoBanco()">
                             <v-icon>delete</v-icon>
                         </v-btn>
                 </v-speed-dial>
@@ -57,6 +67,6 @@
 </template>
 
 
-<script src="./home.js"></script>
+<script src="./homeAdmin.js"></script>
 
-<style scoped src="./home.scss"></style>
+<style scoped src="./homeAdmin.scss"></style>

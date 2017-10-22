@@ -24,7 +24,7 @@
 </v-app>
 </template>
 
-<script src="./home.js"></script>
+<script src="./homeTeste.js"></script>
 
-<style scoped src="./home.scss"></style>
+<style scoped src="./homeTeste.scss"></style>
 

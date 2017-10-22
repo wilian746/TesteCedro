@@ -77,16 +77,18 @@ exports.getProduto = function (req, res, next) {
 
 
 exports.registroDeProduto = function (req, res, next) {
+    console.log('\nuser',req.user)
     if (req.user.autorizacao === 'user') {
         res.status(401).send({message: 'Você não está autorizado a cadastrar Produto'});
         return next('Não autorizado');
     }
-
+    
     Produto.create({
         nome: req.body.nome,
         descricao: req.body.descricao,
         preco: req.body.preco,
-        id_user: req.user._id
+        id_user: req.user._id,
+        foto: req.body.foto
     }, function (err, produto) {
         if (err)
             return res.status(500).send({message: 'Erro ao criar Produto', error: err});

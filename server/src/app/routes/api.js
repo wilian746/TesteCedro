@@ -47,10 +47,10 @@ module.exports = function (app) {
         // Project Routes
         apiRoutes.use('/produto',
         produtoRoutes.get('/', ProdutoController.getAllProdutos),
-        produtoRoutes.get('/:id_produto', requireAuth, ProdutoController.getProduto),
+        produtoRoutes.get('/:id_produto' , ProdutoController.getProduto),
         produtoRoutes.post('/registroDeProduto', requireAuth, ProdutoController.registroDeProduto),
-        produtoRoutes.put('/:id_produto', requireAuth, ProdutoController.updateDeProduto),
-        produtoRoutes.delete('/:id_produto', requireAuth, ProdutoController.deleteDeProduto)
+        produtoRoutes.put('/:id_produto',requireAuth, ProdutoController.updateDeProduto),
+        produtoRoutes.delete('/:id_produto', requireAuth,ProdutoController.deleteDeProduto)
         )
 
         

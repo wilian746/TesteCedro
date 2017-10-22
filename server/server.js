@@ -29,7 +29,6 @@ app.use(compression());
 app.use(logger('dev'));
 app.use(cors({
     origin: '*',
-    withCredentials: false,
     allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With', 'Accept', 'Origin']
 }));
 app.use(errorHandler());

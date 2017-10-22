@@ -13,6 +13,9 @@ var ProdutoSchema = new mongoose.Schema({
         type: String,
         required: [true, 'Um preco deve ser informado']
     },
+    foto:{
+        type: String
+    },
     id_user: {
         type: mongoose.Schema.ObjectId,
         required: true

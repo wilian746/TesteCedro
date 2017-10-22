@@ -3,14 +3,14 @@ const API_Produto = API + "produto/";
 const API_Login = API + "auth/login";
 
 export default {
-    name: 'home',
+    name: 'teste',
     data: () => ({
         email:null,
         password:null,
         produtos:[]
     }),
     methods:{
-        getProduto(){
+       /* getProduto(){
             this.axios.get(API_Produto).then((response) => {
                 this.produtos = response.data;
               })
@@ -20,7 +20,7 @@ export default {
             this.axios.post(API_Login, credentials).then((response) => {
                 console.log(response.data);
               })
-        }
+        }*/
     },
     created(){
       
