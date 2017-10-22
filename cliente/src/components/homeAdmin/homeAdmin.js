@@ -41,19 +41,18 @@ export default {
             this.$router.push('/')
         },
         cadastrarProduto() {
-            let config = {
-                withCredentials: true,
+            let config = JSON.stringify({
                 headers: {
-                    'Content-Type': 'application/json',
+                    'Content-Type': 'application/x-www-form-urlencoded',
                     'Authorization':  this.$store.getters.getToken
                 }
-            }
-            let credentials = JSON.stringify({ 
+            })
+            let credentials =  JSON.stringify({ 
                 'nomeProduto': this.nomeProduto, 
                 'descricaoProduto': this.descricaoProduto, 
                 'precoProduto': parseFloat(this.precoProduto) 
             })
-            console.log('\nheader',JSON.stringify(config) + '\ncredentials',credentials)
+            console.log('\nheader',JSON.stringify(config) + '\ncredentials',JSON.stringify(credentials))
 
             this.axios.post(API_CadastroProduto, credentials, config).then((response) => {
                 console.log(response.data);
