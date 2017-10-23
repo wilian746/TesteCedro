@@ -56,7 +56,7 @@ exports.registroDeUsuario = function (req, res, next) {
         if (existingUser) {
             return res.status(422).send({error: 'Esse e-mail já esta em uso'});
         }
-        if(autorizacao !== 'admin' && autorizacao !== 'user'){
+        if (autorizacao !== 'admin' && autorizacao !== 'user') {
             return res.status(422).send({error: 'A autorização so pode ser admin ou user'});
         }
         var user = new User({

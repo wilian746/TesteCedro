@@ -1,10 +1,7 @@
 <template>
   <v-layout column>
       <v-toolbar color="primary" dark>
-        <v-toolbar-title>Cedro Tech
-          {{this.$store.getToken}}
-        </v-toolbar-title>
-
+        <v-toolbar-title>Cedro Tech</v-toolbar-title>
         <v-spacer></v-spacer>
         <v-spacer></v-spacer>
           <v-dialog persistent max-width="500px">
@@ -30,8 +27,7 @@
           <v-flex xs4
             v-bind="{ [`xs${produto.flex}`]: true }"
             v-for="produto in produtos"
-            :key="produto._id" 
-          >
+            :key="produto._id">
             <v-card >
               <v-card-media :src="produto.src" height="200px" @click="trazerUMProdutooDoBanco()">
                 <v-container fill-height fluid>

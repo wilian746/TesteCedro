@@ -1,10 +1,8 @@
-'use strict';
 const mongoose = require('mongoose');
 const moment = require('moment');
 moment.locale('pt-BR');
 
 const Produto = require('../models/produto');
-
 
 function sortAndOrderBy(sort, orderBy) {
     if (sort) {
@@ -77,7 +75,6 @@ exports.getProduto = function (req, res, next) {
 
 
 exports.registroDeProduto = function (req, res, next) {
-    console.log('\nuser',req.user)
     if (req.user.autorizacao === 'user') {
         res.status(401).send({message: 'Você não está autorizado a cadastrar Produto'});
         return next('Não autorizado');
