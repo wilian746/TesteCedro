@@ -17,13 +17,16 @@ export default {
     nomeProduto: '',
     descricaoProduto: '',
     dialog: false,
+    alert: true,
     precoProduto: 0,
     nomeProdutoNovo: '',
     descricaoProdutoNovo: '',
     precoProdutoNovo: 0,
     produtos: [],
   }),
+  props: ['imageSrc'],
   methods: {
+
     trazerApenasUmProdutoDoBanco(produtoID) {
       this.$router.push('/visualizarProduto')
       let config = {
@@ -37,11 +40,13 @@ export default {
         console.log( response.data)
       })
     },
+
     getProduto () {
       this.axios.get(API_Produto).then((response) => {
         this.produtos = response.data
       })
     },
+
     fazerLogin () {
       let credentials = {
         email: this.email,
@@ -53,9 +58,11 @@ export default {
         this.$router.push('/home')
       })
     },
+
     sairParaPaginaPrincipal () {
       this.$router.push('/')
     },
+
     cadastrarProduto () {
       let config = {
         headers: {
@@ -71,10 +78,12 @@ export default {
 
       this.axios.post(API_CadastroProduto, credentials, config).then((response) => {
         console.log(response.data)
+        this.$router.push('/')
       }).catch(function (error) {
         console.log(error)
       })
     },
+
     deletarProdutoDoBanco (produtoID) {
       let config = {
         headers: {
@@ -85,9 +94,11 @@ export default {
       this.axios.delete(API_Produto + produtoID, config).then((response) => {
         console.log(response.data.nomeProduto)
         window.location.reload();
+        this.$router.push('/')
       })
       
     },
+
     updateProdutoDoBanco (produtoID) {
       let config = {
         headers: {
@@ -103,9 +114,24 @@ export default {
       this.axios.put(API_Produto + produtoID, credentials,config).then((response) => {
         console.log('Credentials:',credentials)
         console.log( response.data)
-        this.$router.push('/homeReload')
+        this.$router.push('/')
       })
-     
+    },
+
+    previewThumbnail: function(event) {
+      var input = event.target;
+
+      if (input.files && input.files[0]) {
+        var reader = new FileReader();
+
+        var vm = this;
+
+        reader.onload = function(e) {
+          vm.imageSrc = e.target.result;
+        }
+
+        reader.readAsDataURL(input.files[0]);
+      }
     }
   }
 }

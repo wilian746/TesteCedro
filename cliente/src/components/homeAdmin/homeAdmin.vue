@@ -13,6 +13,17 @@
                       <v-text-field label="Nome" v-model="nomeProduto" required></v-text-field>
                       <v-text-field label="Descricao" v-model="descricaoProduto" required></v-text-field>
                       <v-text-field label="Preco" v-model="precoProduto" required></v-text-field>
+                      <div class="Image-input">
+                        <div class="Image-input__image-wrapper">
+                          <i v-show="! imageSrc" class="icon fa fa-picture-o"></i>
+                          <img v-show="imageSrc" class="Image-input__image" :src="imageSrc">
+                        </div>
+
+                        <div class="Image-input__input-wrapper">
+                          Selecione uma Foto
+                          <input @change="previewThumbnail" class="Image-input__input" name="thumbnail" type="file">
+                        </div>
+                      </div>
                     </v-form>
                     <v-btn color="primary" @click="cadastrarProduto()">Cadastrar</v-btn>
                   </v-flex>
@@ -26,24 +37,27 @@
         </v-btn>
       </v-toolbar>
       <v-container fluid grid-list-md class="grey lighten-4">
+         <image-input image-src=""></image-input>
         <div v-if="this.$store.getters.getToken === undefined">
-          <p>Usuário não está logado por favor retorne e faça login</p>
-          <v-dialog persistent max-width="500px">
-            <v-btn dark slot="activator">ENTRAR</v-btn>
-            <v-card color="grey lighten-4">
-              <v-container grid-list-md>
-                <v-layout wrap>
-                  <v-flex xs12 >
-                    <v-form>
-                      <v-text-field label="email" v-model="email" required></v-text-field>
-                      <v-text-field label="senha"  type="password" v-model="password" required></v-text-field>
-                    </v-form>
-                    <v-btn block color="primary" @click="fazerLogin()">Login</v-btn>
-                  </v-flex>
-                </v-layout>
-              </v-container>
-            </v-card>
-          </v-dialog>
+          <v-alert color="info" icon="info" dismissible v-model="alert">
+            <p>Usuário não está logado. Faça login e tenha muitas vantagens!</p>
+            <v-dialog persistent max-width="500px">
+              <v-btn dark color="info"slot="activator">ENTRAR</v-btn>
+              <v-card color="grey lighten-4">
+                <v-container grid-list-md>
+                  <v-layout wrap>
+                    <v-flex xs12 >
+                      <v-form>
+                        <v-text-field label="email" v-model="email" required></v-text-field>
+                        <v-text-field label="senha"  type="password" v-model="password" required></v-text-field>
+                      </v-form>
+                      <v-btn block color="primary" @click="fazerLogin()">Login</v-btn>
+                    </v-flex>
+                  </v-layout>
+                </v-container>
+              </v-card>
+            </v-dialog>
+          </v-alert>
         </div>
         <v-layout row wrap>
           <v-flex xs4

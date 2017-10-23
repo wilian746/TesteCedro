@@ -5,6 +5,7 @@ const API_Login = API + 'auth/login/'
 export default {
   name: 'homeCliente',
   data: () => ({
+    alert: true,
     email: '',
     password: '',
     produtos: []

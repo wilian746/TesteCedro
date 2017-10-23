@@ -23,6 +23,11 @@
           </v-dialog>
       </v-toolbar>
       <v-container fluid grid-list-md class="grey lighten-4">
+        <div v-if="this.$store.getters.getToken === undefined">
+          <v-alert color="info" icon="info" dismissible v-model="alert">
+            <p>Usuário não está logado. Faça login e tenha muitas vantagens!</p>
+          </v-alert>
+        </div>
         <v-layout row wrap>
           <v-flex xs4
             v-bind="{ [`xs${produto.flex}`]: true }"

@@ -21,11 +21,6 @@ export default new Router({
       component: HomeAdmin
     },
     {
-      path: '/homeReload',
-      name: 'homeAdmin',
-      component: HomeAdmin
-    },
-    {
       path: '/cadastroDeUsuario',
       name: 'cadastroDeUsuario',
       component: CadastroDeUsuario
