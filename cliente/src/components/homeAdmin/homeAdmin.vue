@@ -18,11 +18,13 @@
                           <i v-show="! imageSrc" class="icon fa fa-picture-o"></i>
                           <img v-show="imageSrc" class="Image-input__image" :src="imageSrc">
                         </div>
-
                         <div class="Image-input__input-wrapper">
                           Selecione uma Foto
                           <input @change="previewThumbnail" class="Image-input__input" name="thumbnail" type="file">
                         </div>
+                      </div>
+                      <v-btn @click="adicionaMaisImagem = true">Adicionar mais imagem</v-btn>
+                      <div v-if="adicionaMaisImagem === true">
                       </div>
                     </v-form>
                     <v-btn color="primary" @click="cadastrarProduto()">Cadastrar</v-btn>

@@ -18,6 +18,7 @@ export default {
     descricaoProduto: '',
     dialog: false,
     alert: true,
+    adicionaMaisImagem: false,
     precoProduto: 0,
     nomeProdutoNovo: '',
     descricaoProdutoNovo: '',
