@@ -72,25 +72,16 @@
                       <v-layout wrap>
                         <v-flex xs12 >
                             <v-card-actions>
-                              <v-spacer></v-spacer>
-                              <v-btn fab dark small color="red" top right @click.native="dialog = false">
-                                <v-icon>close</v-icon>
-                              </v-btn>
+                                <v-spacer></v-spacer>
+                                <v-btn fab dark small color="red" top right @click.native="dialog = false">
+                                    <v-icon>close</v-icon>
+                                </v-btn>
                             </v-card-actions>
-                          <v-form>
-                            <v-text-field label="Nome" v-model="nomeProdutoNovo" required>{{produto.nome}}</v-text-field>
-                            <v-text-field label="Descricao" v-model="descricaoProdutoNovo" required>{{produto.descricao}}</v-text-field>
-                            <v-text-field label="Preco" v-model="precoProdutoNovo" required>{{produto.preco}}</v-text-field>
-                          </v-form>
-                          <v-btn block color="primary" block @click="updateProdutoDoBanco(produto._id)">Atualizar</v-btn>
                         </v-flex>
                       </v-layout>
                     </v-container>
                   </v-card>
                 </v-dialog>
-                <v-btn fab dark small color="red" @click="deletarProdutoDoBanco(produto._id)">
-                  <v-icon>delete</v-icon>
-                </v-btn>
               </v-card-actions>
             </v-card>
           </v-flex>
@@ -99,7 +90,6 @@
   </v-layout>
 </template>
 
+<script src="./visualizarProduto.js"></script>
 
-<script src="./homeAdmin.js"></script>
-
-<style scoped src="./homeAdmin.scss"></style>
+<style scoped src="./visualizarProduto.scss"></style>

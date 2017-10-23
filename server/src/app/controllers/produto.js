@@ -60,15 +60,12 @@ exports.getAllProdutos = function (req, res, next) {
 exports.getProduto = function (req, res, next) {
     const select = req.query.select;
     
-        var query = Produto.find({$and: [{id_produto: req.params.id_produto}, {_id: req.params.id_produto}]}).select(select);
-        query.exec(function (err, produtos) {
-            if (err)
-                return res.status(500).send({message: 'Erro ao buscar produto', error: err});
-    
-            if (!produtos || !produtos.length)
-                return res.status(422).send({message: 'Nenhum produto foi encontrado'});
-    
-            return res.status(200).json(produtos);
+    var query = Produto.findById(req.params.id_produto).select(select);
+    query.exec(function (err, produtos) {
+        if (err)
+            return res.status(500).send({message: 'Nenhum produto foi encontrado', error: err});
+
+        return res.status(200).json(produtos);
         });
 };
 

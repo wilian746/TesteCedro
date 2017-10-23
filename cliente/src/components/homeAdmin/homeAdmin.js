@@ -11,35 +11,46 @@ export default {
     console.log(this.$store.getters.getToken)
   },
   data: () => ({
-    menus: [
-        { item: 'Click Me' },
-        { item: 'Click Me' },
-        { item: 'Click Me' },
-        { item: 'Click Me 2' }
-    ],
-    items: [
-        { title: 'Click Me' },
-        { title: 'Click Me' },
-        { title: 'Click Me' },
-        { title: 'Click Me 2' }
-    ],
-    direction: 'left',
-    right: true,
-    bottom: true,
     transition: 'slide-y-reverse-transition',
+    email: '',
+    password: '',
     nomeProduto: '',
     descricaoProduto: '',
+    dialog: false,
     precoProduto: 0,
     nomeProdutoNovo: '',
     descricaoProdutoNovo: '',
     precoProdutoNovo: 0,
     produtos: [],
-    dialog: false
   }),
   methods: {
+    trazerApenasUmProdutoDoBanco(produtoID) {
+      this.$router.push('/visualizarProduto')
+      let config = {
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': this.$store.getters.getToken
+        }
+      }
+      this.axios.get(API_Produto + produtoID, config).then((response) => {
+        this.produtos = response.data
+        console.log( response.data)
+      })
+    },
     getProduto () {
       this.axios.get(API_Produto).then((response) => {
         this.produtos = response.data
+      })
+    },
+    fazerLogin () {
+      let credentials = {
+        email: this.email,
+        password: this.password
+      }
+
+      this.axios.post(API_Login, credentials).then((response) => {
+        this.$store.commit('setToken', response.data.token)
+        this.$router.push('/home')
       })
     },
     sairParaPaginaPrincipal () {
@@ -60,7 +71,6 @@ export default {
 
       this.axios.post(API_CadastroProduto, credentials, config).then((response) => {
         console.log(response.data)
-        this.$router.push('/home')
       }).catch(function (error) {
         console.log(error)
       })
@@ -74,8 +84,9 @@ export default {
       }
       this.axios.delete(API_Produto + produtoID, config).then((response) => {
         console.log(response.data.nomeProduto)
-        this.$router.push('/home')
+        window.location.reload();
       })
+      
     },
     updateProdutoDoBanco (produtoID) {
       let config = {
@@ -92,7 +103,9 @@ export default {
       this.axios.put(API_Produto + produtoID, credentials,config).then((response) => {
         console.log('Credentials:',credentials)
         console.log( response.data)
+        this.$router.push('/homeReload')
       })
+     
     }
   }
 }

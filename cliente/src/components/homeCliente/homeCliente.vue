@@ -14,8 +14,8 @@
                       <v-text-field label="email" v-model="email" required></v-text-field>
                       <v-text-field label="senha"  type="password" v-model="password" required></v-text-field>
                     </v-form>
-                    <v-btn color="primary" @click="fazerLogin()">Login</v-btn>
-                    <v-btn color="primary" @click="irParaPaginaDeCadastroDeUsuario()">Cadastro</v-btn>
+                    <v-btn block color="primary" @click="fazerLogin()">Login</v-btn>
+                    <v-btn block color="primary" @click="irParaPaginaDeCadastroDeUsuario()">Cadastro</v-btn>
                   </v-flex>
                 </v-layout>
               </v-container>
@@ -29,11 +29,11 @@
             v-for="produto in produtos"
             :key="produto._id">
             <v-card >
-              <v-card-media :src="produto.src" height="200px" @click="trazerUMProdutooDoBanco()">
+              <v-card-media :src="produto.src" height="200px">
                 <v-container fill-height fluid>
                   <v-layout fill-height>
                     <v-flex xs12 align-end flexbox>
-                      <span color="black" v-text="produto.nome" ></span>
+                      <span color="black" v-text="produto.nome"></span>
                     </v-flex>
                   </v-layout>
                 </v-container>

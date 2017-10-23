@@ -3,18 +3,13 @@ import Router from 'vue-router'
 
 import HomeAdmin from '@/components/homeAdmin/homeAdmin.vue'
 import HomeCliente from '@/components/homeCliente/homeCliente.vue'
-import Teste from '@/components/TESTE_INICIO/homeTeste.vue'
 import CadastroDeUsuario from '@/components/cadastroDeUsuario/cadastroDeUsuario.vue'
+import VisualizarProduto from '@/components/VisualizarProduto/VisualizarProduto.vue'
 
 Vue.use(Router)
 
 export default new Router({
   routes: [
-    {
-      path: '/teste',
-      name: 'teste',
-      component: Teste
-    },
     {
       path: '/',
       name: 'homeCliente',
@@ -26,9 +21,19 @@ export default new Router({
       component: HomeAdmin
     },
     {
+      path: '/homeReload',
+      name: 'homeAdmin',
+      component: HomeAdmin
+    },
+    {
       path: '/cadastroDeUsuario',
       name: 'cadastroDeUsuario',
       component: CadastroDeUsuario
+    },
+    {
+      path: '/visualizarProduto',
+      name: 'visualizarProduto',
+      component: VisualizarProduto
     }
   ]
 })
