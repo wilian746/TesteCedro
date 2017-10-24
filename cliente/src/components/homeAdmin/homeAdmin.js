@@ -19,6 +19,7 @@ export default {
     dialog: false,
     alert: true,
     adicionaMaisImagem: false,
+    adicionaMaisOutraImagem: false,
     precoProduto: 0,
     nomeProdutoNovo: '',
     descricaoProdutoNovo: '',
@@ -45,6 +46,7 @@ export default {
     getProduto () {
       this.axios.get(API_Produto).then((response) => {
         this.produtos = response.data
+        console.log('produtos:',JSON.stringify(this.produtos))
       })
     },
 

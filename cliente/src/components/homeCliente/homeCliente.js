@@ -8,7 +8,8 @@ export default {
     alert: true,
     email: '',
     password: '',
-    produtos: []
+    produtos: [],
+    users: []
   }),
   methods: {
     trazerTodosProdutosDoBanco () {
@@ -21,10 +22,16 @@ export default {
         email: this.email,
         password: this.password
       }
-
       this.axios.post(API_Login, credentials).then((response) => {
+        this.users = response.data.user
         this.$store.commit('setToken', response.data.token)
-        this.$router.push('/home')
+        if(this.users.autorizacao === 'admin'){
+          this.$router.push('/home')
+        }
+        else if(this.users.autorizacao === 'user'){
+          this.trazerTodosProdutosDoBanco ();
+          this.$router.push('/')
+        }
       })
     },
     irParaPaginaDeCadastroDeUsuario () {

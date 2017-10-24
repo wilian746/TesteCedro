@@ -103,7 +103,7 @@ exports.updateDeProduto = function (req, res, next) {
         new: true,
         upsert: true
     };
-    
+    console.log('idupdate:',req.params.id_produto)
     Produto.findByIdAndUpdate(req.params.id_produto, {$set: req.body}, optionsObj, function (err, updateProduto) {
         if (err)
             return res.status(500).send({message: 'Erro ao atualizar Produto', error: err});

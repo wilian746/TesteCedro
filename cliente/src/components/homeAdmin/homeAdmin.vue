@@ -24,8 +24,6 @@
                         </div>
                       </div>
                       <v-btn @click="adicionaMaisImagem = true">Adicionar mais imagem</v-btn>
-                      <div v-if="adicionaMaisImagem === true">
-                      </div>
                     </v-form>
                     <v-btn color="primary" @click="cadastrarProduto()">Cadastrar</v-btn>
                   </v-flex>
@@ -79,6 +77,9 @@
               <v-card-actions class="white">
                 <span color="black" v-text="produto.preco"></span>
                 <v-spacer></v-spacer>
+                <v-btn fab dark small color="light-blue darken-1">
+                  <v-icon>gavel</v-icon>
+                </v-btn>
                 <v-dialog persistent max-width="500px" v-model="dialog">
                   <v-btn fab dark small color="green" slot="activator">
                     <v-icon>edit</v-icon>
@@ -98,7 +99,7 @@
                             <v-text-field label="Descricao" v-model="descricaoProdutoNovo" required>{{produto.descricao}}</v-text-field>
                             <v-text-field label="Preco" v-model="precoProdutoNovo" required>{{produto.preco}}</v-text-field>
                           </v-form>
-                          <v-btn block color="primary" block @click="updateProdutoDoBanco(produto._id)">Atualizar</v-btn>
+                          <v-btn block color="light-blue darken-1" block @click="updateProdutoDoBanco(produto._id)">Atualizar</v-btn>
                         </v-flex>
                       </v-layout>
                     </v-container>
@@ -107,6 +108,7 @@
                 <v-btn fab dark small color="red" @click="deletarProdutoDoBanco(produto._id)">
                   <v-icon>delete</v-icon>
                 </v-btn>
+                
               </v-card-actions>
             </v-card>
           </v-flex>
