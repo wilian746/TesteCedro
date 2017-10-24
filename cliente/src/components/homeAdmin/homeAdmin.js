@@ -62,7 +62,6 @@ export default {
         formaDePagamento: this.formaDePagamento,
         parcelas: parseFloat(this.parcelas)
       }
-      console.log(valores + 'proximo',proximoRequisitoDeNovo)
     },
 
     comprarProdutoAprazo (){ 
@@ -72,9 +71,9 @@ export default {
         formaDePagamento: this.formaDePagamento,
         parcelas: parseFloat(this.parcelas)
       }
-      this.produtos.preco = produtos.preco + (produtos.preco * 0.02)
-      this.resultado = produtos.preco
-      this.resultado = resultado / this.parcelas
+      this.produtos.preco += this.produtos.preco + (this.produtos.preco * 0.02)
+      this.resultado = this.produtos.preco
+      this.resultado = this.resultado / this.parcelas
       return this.resultado
     },
 
@@ -85,10 +84,8 @@ export default {
         formaDePagamento: this.formaDePagamento,
         parcelas: parseFloat(this.parcelas)
       }
-
       this.resultado = (this.valorPagamento - this.produtos.preco)
       return this.resultado
-      console.log('resultadoPagamento:', resultado)
     },
 
     trazerApenasUmProdutoDoBanco(produtoID) {
