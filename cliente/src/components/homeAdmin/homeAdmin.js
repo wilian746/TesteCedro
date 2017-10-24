@@ -16,21 +16,82 @@ export default {
     password: '',
     nomeProduto: '',
     descricaoProduto: '',
+    precoProduto: 0,
     dialog: false,
     alert: true,
-    adicionaMaisImagem: false,
-    adicionaMaisOutraImagem: false,
-    precoProduto: 0,
+    alertCompra: true,
+    alertCompraDnv: true,
+    alertNomeProduto: true,
+    alertDescricaoProduto: true,
+    alertPrecoProduto: true,
+    proximoRequisito: false,
+    proximoRequisitoDeNovo: false,
+    cardDialog: false,
+    cardCadastroDeProduto: false,
     nomeProdutoNovo: '',
     descricaoProdutoNovo: '',
     precoProdutoNovo: 0,
     produtos: [],
+    valorPagamento: '',
+    tipoPagamento: '',
+    formaDePagamento:'',
+    parcelas:'',
+    resultado:''
+
   }),
   props: ['imageSrc'],
   methods: {
 
+    guardarValoresPagamento (){
+      this.proximoRequisito = true
+
+      let valores = {
+        valorPagamento : this.valorPagamento,
+        tipoPagamento: this.tipoPagamento,
+        formaDePagamento: this.formaDePagamento,
+        parcelas: parseFloat(this.parcelas)
+      }
+      console.log(valores + 'proximo',proximoRequisito)
+    },
+
+    guardarValoresPagamentoDeNovo (){
+      this.proximoRequisitoDeNovo = true
+      let valores = {
+        valorPagamento : this.valorPagamento,
+        tipoPagamento: this.tipoPagamento,
+        formaDePagamento: this.formaDePagamento,
+        parcelas: parseFloat(this.parcelas)
+      }
+      console.log(valores + 'proximo',proximoRequisitoDeNovo)
+    },
+
+    comprarProdutoAprazo (){ 
+      let valores = {
+        valorPagamento : this.valorPagamento,
+        tipoPagamento: this.tipoPagamento,
+        formaDePagamento: this.formaDePagamento,
+        parcelas: parseFloat(this.parcelas)
+      }
+      this.produtos.preco = produtos.preco + (produtos.preco * 0.02)
+      this.resultado = produtos.preco
+      this.resultado = resultado / this.parcelas
+      return this.resultado
+    },
+
+    comprarProdutoAvista (){ 
+      let valores = {
+        valorPagamento : this.valorPagamento,
+        tipoPagamento: this.tipoPagamento,
+        formaDePagamento: this.formaDePagamento,
+        parcelas: parseFloat(this.parcelas)
+      }
+
+      this.resultado = (this.valorPagamento - this.produtos.preco)
+      return this.resultado
+      console.log('resultadoPagamento:', resultado)
+    },
+
     trazerApenasUmProdutoDoBanco(produtoID) {
-      this.$router.push('/visualizarProduto')
       let config = {
         headers: {
           'Content-Type': 'application/json',
@@ -39,7 +100,7 @@ export default {
       }
       this.axios.get(API_Produto + produtoID, config).then((response) => {
         this.produtos = response.data
-        console.log( response.data)
+        console.log('respostea', response.data)
       })
     },
 

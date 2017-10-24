@@ -3,16 +3,37 @@
       <v-toolbar color="primary" dark>
         <v-toolbar-title>Cedro Tech</v-toolbar-title>
         <v-spacer></v-spacer>
-        <v-dialog persistent max-width="500px">
+        <v-dialog persistent max-width="500px" v-model="cardCadastroDeProduto">
             <v-btn dark slot="activator">CADASTRAR PRODUTO</v-btn>
             <v-card color="grey lighten-4">
               <v-container grid-list-md>
                 <v-layout wrap>
                   <v-flex xs12 >
+                    <v-card-actions>
+                      <v-spacer></v-spacer>
+                      <v-btn fab dark small color="red" top right @click.native="cardCadastroDeProduto = false">
+                        <v-icon>close</v-icon>
+                      </v-btn>
+                    </v-card-actions>
                     <v-form>
                       <v-text-field label="Nome" v-model="nomeProduto" required></v-text-field>
+                        <div v-if="nomeProduto === ''">
+                          <v-alert color="info" icon="info" dismissible v-model="alertNomeProduto">
+                            <p>Você deve inserir o nome do produto</p>
+                          </v-alert>
+                        </div>
                       <v-text-field label="Descricao" v-model="descricaoProduto" required></v-text-field>
+                        <div v-if="descricaoProduto === ''">
+                          <v-alert color="info" icon="info" dismissible v-model="alertDescricaoProduto">
+                            <p>Você deve inserir a descrição do produto</p>
+                          </v-alert>
+                        </div>
                       <v-text-field label="Preco" v-model="precoProduto" required></v-text-field>
+                        <div v-if="precoProduto === 0">
+                          <v-alert color="info" icon="info" dismissible v-model="alertPrecoProduto">
+                            <p>Você deve inserir o preço do produto</p>
+                          </v-alert>
+                        </div>
                       <div class="Image-input">
                         <div class="Image-input__image-wrapper">
                           <i v-show="! imageSrc" class="icon fa fa-picture-o"></i>
@@ -20,10 +41,10 @@
                         </div>
                         <div class="Image-input__input-wrapper">
                           Selecione uma Foto
-                          <input @change="previewThumbnail" class="Image-input__input" name="thumbnail" type="file">
+                          <input @change="previewThumbnail" class="Image-input__input" name="thumbnail" type="file" multiple>
                         </div>
                       </div>
-                      <v-btn @click="adicionaMaisImagem = true">Adicionar mais imagem</v-btn>
+                      
                     </v-form>
                     <v-btn color="primary" @click="cadastrarProduto()">Cadastrar</v-btn>
                   </v-flex>
@@ -37,7 +58,7 @@
         </v-btn>
       </v-toolbar>
       <v-container fluid grid-list-md class="grey lighten-4">
-         <image-input image-src=""></image-input>
+        <image-input image-src=""></image-input>
         <div v-if="this.$store.getters.getToken === undefined">
           <v-alert color="info" icon="info" dismissible v-model="alert">
             <p>Usuário não está logado. Faça login e tenha muitas vantagens!</p>
@@ -77,9 +98,80 @@
               <v-card-actions class="white">
                 <span color="black" v-text="produto.preco"></span>
                 <v-spacer></v-spacer>
-                <v-btn fab dark small color="light-blue darken-1">
+                <v-dialog persistent max-width="500px" v-model="cardDialog">
+                  <v-btn fab dark small color="light-blue darken-1" slot="activator">
                   <v-icon>gavel</v-icon>
                 </v-btn>
+                  <v-card color="grey lighten-4">
+                    <v-container grid-list-md>
+                      <v-layout wrap>
+                        <v-flex xs12 >
+                            <v-card-actions>
+                              <v-spacer></v-spacer>
+                              <v-btn fab dark small color="red" top right @click.native="cardDialog = false">
+                                <v-icon>close</v-icon>
+                              </v-btn>
+                            </v-card-actions>
+                          <v-form>
+                            <p> O valor para você pagar é de R$ {{produto.preco}}</p>
+                            <v-text-field label="Valor" placeholder="0.00" v-model="valorPagamento" required></v-text-field>
+                            <v-text-field label="Tipo de Pagamento" placeholder="cartão ou dinheiro" v-model="tipoPagamento" required></v-text-field>
+                            <div v-if="tipoPagamento !== 'cartão' && tipoPagamento !== 'dinheiro'">
+                              <v-alert color="info" icon="info" dismissible v-model="alertCompra">
+                                <p>Você deve inserir cartão ou dinheiro</p>
+                              </v-alert>
+                               <v-btn block color="grey lighten-1" block disabled>Próximo</v-btn>
+                            </div>
+                            <div v-if="tipoPagamento === 'cartão' || tipoPagamento === 'dinheiro'">
+                               <v-btn block color="light-blue darken-1" block @click="guardarValoresPagamento()">Próximo</v-btn>
+                            </div>
+                            <div v-if="proximoRequisito === true && tipoPagamento === 'cartão'">
+                              <v-text-field label="Forma de Pagamento" placeholder="avista ou aprazo" v-model="formaDePagamento" required></v-text-field>
+                                <div v-if="formaDePagamento !== 'avista' && formaDePagamento !== 'aprazo'">
+                                <v-alert color="info" icon="info" dismissible v-model="alertCompraDnv">
+                                  <p>Você deve inserir avista ou aprazo</p>
+                                </v-alert>
+                                <v-btn block color="grey lighten-1" block disabled>Próximo</v-btn>
+                                </div>
+                                <div v-if="formaDePagamento === 'avista' || formaDePagamento === 'aprazo'">
+                                  <v-btn block color="light-blue darken-1" block @click="guardarValoresPagamentoDeNovo()">Próximo</v-btn>
+                                </div>
+                                <div v-if="proximoRequisitoDeNovo === true && formaDePagamento === 'aprazo'">
+                                  <v-text-field label="Quantidade de parcelas" v-model="parcelas" required></v-text-field>
+                                  <div v-if="parcelas === ''">
+                                    <v-alert color="info" icon="info" dismissible v-model="alertCompraDnv">
+                                      <p>Você deve inserir o numero de parcelas</p>
+                                    </v-alert>
+                                    <v-btn block color="grey lighten-1" block disabled>Comprar</v-btn>
+                                  </div>
+                                  <div v-if="parcelas !== ''">
+                                    <v-btn block color="light-blue darken-1" @click="comprarProdutoAprazo()">Comprar</v-btn>
+                                  </div>
+                                </div>
+                            </div>
+                            <br><br><br><br>
+                            <div v-if="proximoRequisitoDeNovo === true && formaDePagamento === 'avista'">
+                              <v-spacer></v-spacer>
+                              <v-btn block color="light-blue darken-1" @click="comprarProdutoAprazo()">Comprar</v-btn>
+                            </div>
+                            <div v-if="proximoRequisito === true && tipoPagamento === 'dinheiro'" comprarProdutoAvista()>
+                               <p> APRAZO{<br>
+                                  produto.preco += produto.preco + (produto.preco * 0.02)<br>
+                                  resultado = produto.preco<br>
+                                  resultado = resultado / parcelas<br>
+                               }
+                               </p>
+                              <p> AVISTA{<br>
+                                O valor a pagar é de {{produto.preco}} e seu troco foi de ({{valorPagamento}} - {{produto.preco}})<br>
+                              }
+                              </p>
+                            </div>
+                          </v-form>
+                        </v-flex>
+                      </v-layout>
+                    </v-container>
+                  </v-card>
+                </v-dialog>
                 <v-dialog persistent max-width="500px" v-model="dialog">
                   <v-btn fab dark small color="green" slot="activator">
                     <v-icon>edit</v-icon>

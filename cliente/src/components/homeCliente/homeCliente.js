@@ -23,15 +23,9 @@ export default {
         password: this.password
       }
       this.axios.post(API_Login, credentials).then((response) => {
-        this.users = response.data.user
         this.$store.commit('setToken', response.data.token)
-        if(this.users.autorizacao === 'admin'){
-          this.$router.push('/home')
-        }
-        else if(this.users.autorizacao === 'user'){
-          this.trazerTodosProdutosDoBanco ();
-          this.$router.push('/')
-        }
+        this.$router.push('/home')
+        
       })
     },
     irParaPaginaDeCadastroDeUsuario () {
