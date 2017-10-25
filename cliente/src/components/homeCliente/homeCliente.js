@@ -9,7 +9,9 @@ export default {
     email: '',
     password: '',
     produtos: [],
-    users: []
+    users: [],
+    cardCadastrar: false,
+    cardLogin: false
   }),
   methods: {
     trazerTodosProdutosDoBanco () {
@@ -28,8 +30,16 @@ export default {
         
       })
     },
-    irParaPaginaDeCadastroDeUsuario () {
-      this.$router.push('/cadastroDeUsuario')
+    fazerCadastroDeUsuario () {
+      let credentials = {
+        nome: this.nome,
+        email: this.email,
+        senha: this.senha,
+        autorizacao: this.autorizacao
+      }
+      this.axios.post(API_CadastroDeUsuario, credentials).then((response) => {
+        this.users = response.data
+      })
     }
   },
   mounted: function () {

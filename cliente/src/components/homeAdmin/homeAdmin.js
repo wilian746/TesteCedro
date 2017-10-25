@@ -12,6 +12,7 @@ export default {
     nomeProduto: '',
     descricaoProduto: '',
     precoProduto: 0,
+    linkImage: '',
     dialog: false,
     alert: true,
     alertCompra: true,
@@ -26,6 +27,7 @@ export default {
     nomeProdutoNovo: '',
     descricaoProdutoNovo: '',
     precoProdutoNovo: 0,
+    linkImageNovo: '',
     produtos: [],
     valorPagamento: '',
     tipoPagamento: '',
@@ -34,7 +36,7 @@ export default {
     resultado: 0,
     produtoSelecionadoID: '',
     descricaoProdutoSelecionado: '',
-    resultadoParcelado = 0
+    resultadoParcelado: 0
   }),
   props: ['imageSrc'],
   methods: {
@@ -47,7 +49,6 @@ export default {
         formaDePagamento: this.formaDePagamento,
         parcelas: parseFloat(this.parcelas)
       }
-      console.log(valores + 'proximo', this.proximoRequisito)
     },
 
     guardarValoresPagamentoDeNovo () {
@@ -76,14 +77,13 @@ export default {
 
       this.resultado = valorFinal.toFixed(2)
       this.resultadoParcelado = (resultado / this.parcelas)
-      console.log('roda', this.resultado)
     },
 
     comprarProdutoAvista () {
       this.resultado = (this.valorPagamento - this.precoProdutoNovo)
     },
     comprarProdutoAvistaComDesconto () {
-      this.resultado = (this.precoProdutoNovo * 0.10) + precoProdutoNovo
+      this.resultado = (parseFloat(this.precoProdutoNovo) - (this.precoProdutoNovo * 0.10))
     },
 
     trazerApenasUmProdutoDoBanco (produtoID) {
@@ -132,13 +132,13 @@ export default {
       let novoProduto = JSON.stringify({
         'nome': this.nomeProduto,
         'descricao': this.descricaoProduto,
-        'preco': parseFloat(this.precoProduto)
+        'preco': parseFloat(this.precoProduto),
+        'foto': this.linkImage
       })
 
       this.axios.post(API_CadastroProduto, novoProduto, config).then((response) => {
         this.getProduto()
       }).catch(function (error) {
-        console.log(error)
       })
     },
 
@@ -164,7 +164,8 @@ export default {
       let produtoAtualizado = JSON.stringify({
         'nome': this.nomeProdutoNovo,
         'descricao': this.descricaoProdutoNovo,
-        'preco': parseFloat(this.precoProdutoNovo)
+        'preco': parseFloat(this.precoProdutoNovo),
+        'foto': this.linkImageNovo
       })
       this.axios.put(API_Produto + this.produtoSelecionadoID, produtoAtualizado, config).then((response) => {
         this.getProduto()

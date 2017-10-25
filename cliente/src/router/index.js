@@ -4,7 +4,6 @@ import Router from 'vue-router'
 import HomeAdmin from '@/components/homeAdmin/homeAdmin.vue'
 import HomeCliente from '@/components/homeCliente/homeCliente.vue'
 import CadastroDeUsuario from '@/components/cadastroDeUsuario/cadastroDeUsuario.vue'
-import VisualizarProduto from '@/components/visualizarProduto/visualizarProduto.vue'
 
 Vue.use(Router)
 
@@ -24,11 +23,6 @@ export default new Router({
       path: '/cadastroDeUsuario',
       name: 'cadastroDeUsuario',
       component: CadastroDeUsuario
-    },
-    {
-      path: '/visualizarProduto',
-      name: 'visualizarProduto',
-      component: VisualizarProduto
     }
   ]
 })

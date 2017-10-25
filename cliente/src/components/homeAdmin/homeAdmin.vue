@@ -4,7 +4,7 @@
         <v-toolbar-title>Cedro Tech</v-toolbar-title>
         <v-spacer></v-spacer>
         <v-dialog persistent max-width="500px" v-model="cardCadastroDeProduto">
-            <v-btn dark slot="activator">CADASTRAR PRODUTO</v-btn>
+            <v-btn dark color="white" slot="activator">CADASTRAR PRODUTO</v-btn>
             <v-card color="grey lighten-4">
               <v-container grid-list-md>
                 <v-layout wrap>
@@ -34,17 +34,12 @@
                             <p>Você deve inserir o preço do produto</p>
                           </v-alert>
                         </div>
-                      <div class="Image-input">
-                        <div class="Image-input__image-wrapper">
-                          <i v-show="! imageSrc" class="icon fa fa-picture-o"></i>
-                          <img v-show="imageSrc" class="Image-input__image" :src="imageSrc">
+                      <v-text-field label="Link da imagem" v-model="linkImage" required></v-text-field>
+                        <div v-if="linkImage === ''">
+                          <v-alert color="info" icon="info" dismissible v-model="alertPrecoProduto">
+                            <p>Você deve inserir uma Image</p>
+                          </v-alert>
                         </div>
-                        <div class="Image-input__input-wrapper">
-                          Selecione uma Foto
-                          <input @change="previewThumbnail" class="Image-input__input" name="thumbnail" type="file" multiple>
-                        </div>
-                      </div>
-                      
                     </v-form>
                     <v-btn color="primary" @click="cadastrarProduto()">Cadastrar</v-btn>
                   </v-flex>
@@ -86,7 +81,7 @@
             v-for="produto in produtos"
             :key="produto._id">
             <v-card>
-              <v-card-media :src="produto.src" height="200px">
+              <v-card-media :src="produto.foto" height="200px">
                 <v-container fill-height fluid>
                   <v-layout fill-height>
                     <v-flex xs12 align-end flexbox>
@@ -160,7 +155,8 @@
                             </div>
                             <div v-if="proximoRequisito === true && tipoPagamento === 'dinheiro'">
                               <v-btn block color="light-blue darken-1" @click="comprarProdutoAvistaComDesconto()">Comprar</v-btn>
-                              <p>{{resultado}}</p>
+                              <p>O valor do seu produto é: {{precoProdutoNovo}}</p>
+                              <p>Seu produto irá custar: {{resultado}}</p>
                             </div>
                           </v-form>
                         </v-flex>
@@ -186,6 +182,7 @@
                             <v-text-field label="Nome" v-model="nomeProdutoNovo" required>{{produto.nome}}</v-text-field>
                             <v-text-field label="Descricao" v-model="descricaoProdutoNovo" required>{{descricaoProdutoSelecionado}}</v-text-field>
                             <v-text-field label="Preco" v-model="precoProdutoNovo" required>{{produto.preco}}</v-text-field>
+                            <v-text-field label="Link da imagem" v-model="linkImageNovo" required></v-text-field>
                           </v-form>
                           <v-btn block color="light-blue darken-1" block @click="updateProdutoDoBanco()">Atualizar</v-btn>
                         </v-flex>

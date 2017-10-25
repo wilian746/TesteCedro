@@ -4,18 +4,47 @@
         <v-toolbar-title>Cedro Tech</v-toolbar-title>
         <v-spacer></v-spacer>
         <v-spacer></v-spacer>
-          <v-dialog persistent max-width="500px">
+          <v-dialog persistent max-width="500px" v-model="cardLogin">
             <v-btn dark slot="activator">ENTRAR</v-btn>
             <v-card color="grey lighten-4">
               <v-container grid-list-md>
                 <v-layout wrap>
                   <v-flex xs12 >
+                    <v-card-actions>
+                      <v-spacer></v-spacer>
+                      <v-btn fab dark small color="red" top right @click.native="cardLogin = false">
+                        <v-icon>close</v-icon>
+                      </v-btn>
+                    </v-card-actions>
                     <v-form>
                       <v-text-field label="email" v-model="email" required></v-text-field>
                       <v-text-field label="senha"  type="password" v-model="password" required></v-text-field>
                     </v-form>
                     <v-btn block color="primary" @click="fazerLogin()">Login</v-btn>
-                    <v-btn block color="primary" @click="irParaPaginaDeCadastroDeUsuario()">Cadastro</v-btn>
+                  </v-flex>
+                </v-layout>
+              </v-container>
+            </v-card>
+          </v-dialog>
+          <v-dialog persistent max-width="500px" v-model="cardCadastrar">
+            <v-btn dark slot="activator">Cadastrar</v-btn>
+            <v-card color="grey lighten-4">
+              <v-container grid-list-md>
+                <v-layout wrap>
+                  <v-flex xs12 >
+                    <v-card-actions>
+                      <v-spacer></v-spacer>
+                      <v-btn fab dark small color="red" top right @click.native="cardCadastrar = false">
+                        <v-icon>close</v-icon>
+                      </v-btn>
+                    </v-card-actions>
+                    <v-form>
+                      <v-text-field label="Nome" v-model="nome" required></v-text-field>
+                      <v-text-field label="E-mail" v-model="email" required></v-text-field>
+                      <v-text-field label="Senha"  type="password" v-model="senha" required></v-text-field>
+                      <v-text-field label="Tipo de Usuario" placeholder="digite (' user ' ou ' admin ') "v-model="autorizacao" required></v-text-field>
+                    </v-form>
+                    <v-btn color="primary" @click="fazerCadastroDeUsuario()">Cadastrar</v-btn>
                   </v-flex>
                 </v-layout>
               </v-container>
@@ -34,7 +63,7 @@
             v-for="produto in produtos"
             :key="produto._id">
             <v-card >
-              <v-card-media :src="produto.src" height="200px">
+              <v-card-media :src="produto.foto" height="200px">
                 <v-container fill-height fluid>
                   <v-layout fill-height>
                     <v-flex xs12 align-end flexbox>
