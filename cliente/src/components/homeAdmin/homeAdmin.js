@@ -36,14 +36,10 @@ export default {
     parcelas: 0,
     resultado: 0,
     produtoSelecionadoID: '',
-    descricaoProdutoSelecionado: '',
     resultadoParcelado: 0
   }),
   props: ['imageSrc'],
   methods: {
-    mostraDescricao(){
-
-    },
     guardarValoresPagamento () {
       this.proximoRequisito = true
 
