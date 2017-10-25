@@ -7,6 +7,7 @@ export default {
   name: 'home',
   data: () => ({
     transition: 'slide-y-reverse-transition',
+    nomeDoUsuarioLogado: '',
     email: '',
     password: '',
     nomeProduto: '',
@@ -36,34 +37,11 @@ export default {
     parcelas: 0,
     resultado: 0,
     produtoSelecionadoID: '',
-    resultadoParcelado: 0
+    resultadoParcelado: 0,
+    mensagemParaMostrarResultado: ''
   }),
   props: ['imageSrc'],
   methods: {
-    guardarValoresPagamento () {
-      this.proximoRequisito = true
-
-      let valores = {
-        valorPagamento: this.valorPagamento,
-        tipoPagamento: this.tipoPagamento,
-        formaDePagamento: this.formaDePagamento,
-        parcelas: parseFloat(this.parcelas)
-      }
-    },
-
-    guardarValoresPagamentoDeNovo () {
-      this.proximoRequisitoDeNovo = true
-      let valores = {
-        valorPagamento: this.valorPagamento,
-        tipoPagamento: this.tipoPagamento,
-        formaDePagamento: this.formaDePagamento,
-        parcelas: parseFloat(this.parcelas)
-      }
-    },
-    getProdutoID (produtoID) {
-      this.produtoSelecionadoID = produtoID
-      this.trazerApenasUmProdutoDoBanco(produtoID)
-    },
     comprarProdutoAprazo () {
       let precoTotal = parseFloat(this.precoProdutoNovo)
       let valorParcela = 0
@@ -76,16 +54,21 @@ export default {
       valorFinal = precoTotal + valorParcela
 
       this.resultado = valorFinal.toFixed(2)
-      this.resultadoParcelado = (resultado / this.parcelas)
+      this.resultadoParcelado = (this.resultado / this.parcelas)
+      this.mensagemParaMostrarResultado = 'mostra'
     },
-
     comprarProdutoAvista () {
       this.resultado = (this.valorPagamento - this.precoProdutoNovo)
+      this.mensagemParaMostrarResultado = 'mostra'
     },
     comprarProdutoAvistaComDesconto () {
       this.resultado = (parseFloat(this.precoProdutoNovo) - (this.precoProdutoNovo * 0.10))
+      this.mensagemParaMostrarResultado = 'mostra'
     },
-
+    getProdutoID (produtoID) {
+      this.produtoSelecionadoID = produtoID
+      this.trazerApenasUmProdutoDoBanco(produtoID)
+    },
     trazerApenasUmProdutoDoBanco (produtoID) {
       let config = {
         headers: {
@@ -108,14 +91,21 @@ export default {
     },
 
     fazerLogin () {
-      let parametrosDeLogin = {
+      let credentials = {
         email: this.email,
         password: this.password
       }
-
-      this.axios.post(API_Login, parametrosDeLogin).then((response) => {
+      this.axios.post(API_Login, credentials).then((response) => {
         this.$store.commit('setToken', response.data.token)
-        this.$router.push('/home')
+        this.nomeDoUsuarioLogado = response.data.user.name
+
+        if(response.data.user.autorizacao === 'admin'){
+          this.$router.push('/home')
+        }
+        if(response.data.user.autorizacao === 'user'){
+          this.cardLogin = false
+          this.$router.push('/')
+        }
       })
     },
 

@@ -1,6 +1,7 @@
 const API = 'http://localhost:9000/api/v1/'
 const API_Produto = API + 'produto/'
 const API_Login = API + 'auth/login/'
+const API_CadastroDeUsuario = API + 'auth/registroDeUsuario'
 
 export default {
   name: 'homeCliente',
@@ -9,6 +10,7 @@ export default {
     email: '',
     password: '',
     produtos: [],
+    nomeDoUsuarioLogado: '',
     nome: null,
     email: null,
     senha: null,
@@ -16,10 +18,6 @@ export default {
     users: [],
     cardCadastrar: false,
     cardLogin: false,
-
-
-
-    
     nomeProduto: '',
     descricaoProduto: '',
     precoProduto: 0,
@@ -31,16 +29,13 @@ export default {
     alertNomeProduto: true,
     alertDescricaoProduto: true,
     alertPrecoProduto: true,
+    alertNaoLogado: true,
+    alertFecharLogin: true,
     proximoRequisito: false,
     proximoRequisitoDeNovo: false,
     cardDialog: false,
     cardCadastroDeProduto: false,
     cardInfo: false,
-
-
-
-
-
     nomeProdutoNovo: '',
     descricaoProdutoNovo: '',
     precoProdutoNovo: 0,
@@ -52,29 +47,11 @@ export default {
     parcelas: 0,
     resultado: 0,
     produtoSelecionadoID: '',
-    resultadoParcelado: 0
+    resultadoParcelado: 0,
+    mensagemParaFecharCard: false,
+    mensagemParaMostrarResultado: ''
   }),
   methods: {
-    guardarValoresPagamento () {
-      this.proximoRequisito = true
-
-      let valores = {
-        valorPagamento: this.valorPagamento,
-        tipoPagamento: this.tipoPagamento,
-        formaDePagamento: this.formaDePagamento,
-        parcelas: parseFloat(this.parcelas)
-      }
-    },
-
-    guardarValoresPagamentoDeNovo () {
-      this.proximoRequisitoDeNovo = true
-      let valores = {
-        valorPagamento: this.valorPagamento,
-        tipoPagamento: this.tipoPagamento,
-        formaDePagamento: this.formaDePagamento,
-        parcelas: parseFloat(this.parcelas)
-      }
-    },
     getProdutoID (produtoID) {
       this.produtoSelecionadoID = produtoID
       this.trazerApenasUmProdutoDoBanco(produtoID)
@@ -91,16 +68,18 @@ export default {
       valorFinal = precoTotal + valorParcela
 
       this.resultado = valorFinal.toFixed(2)
-      this.resultadoParcelado = (resultado / this.parcelas)
+      this.resultadoParcelado = (this.resultado / this.parcelas)
+      this.mensagemParaMostrarResultado = 'mostra'
     },
 
     comprarProdutoAvista () {
       this.resultado = (this.valorPagamento - this.precoProdutoNovo)
+      this.mensagemParaMostrarResultado = 'mostra'
     },
     comprarProdutoAvistaComDesconto () {
       this.resultado = (parseFloat(this.precoProdutoNovo) - (this.precoProdutoNovo * 0.10))
+      this.mensagemParaMostrarResultado = 'mostra'
     },
-
     trazerApenasUmProdutoDoBanco (produtoID) {
       let config = {
         headers: {
@@ -127,8 +106,15 @@ export default {
       }
       this.axios.post(API_Login, credentials).then((response) => {
         this.$store.commit('setToken', response.data.token)
-        this.$router.push('/home')
+        this.nomeDoUsuarioLogado = response.data.user.name
         
+        if(response.data.user.autorizacao === 'admin'){
+          this.$router.push('/home')
+        }
+        if(response.data.user.autorizacao === 'user'){
+          this.cardLogin = false
+          this.$router.push('/')
+        }
       })
     },
     fazerCadastroDeUsuario () {
@@ -138,11 +124,12 @@ export default {
         senha: this.senha,
         autorizacao: this.autorizacao
       }
-      this.axios.post(API_CadastroDeUsuario, credentials).then((response) => {
-        this.users = response.data
-      })
-    }
-  },
+        this.axios.post(API_CadastroDeUsuario, credentials).then((response) => {
+          this.users = response.data
+          this.cardCadastrar = false
+        })
+      }
+    },
   mounted: function () {
     this.trazerTodosProdutosDoBanco()
   }
