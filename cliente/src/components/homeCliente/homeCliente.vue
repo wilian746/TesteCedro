@@ -1,11 +1,11 @@
 <template>
   <v-layout column>
       <v-toolbar color="primary" dark>
-        <v-toolbar-title>Cedro Tech</v-toolbar-title>
+        <v-toolbar-title class="cedroTech">Cedro Tech</v-toolbar-title>
         <v-spacer></v-spacer>
         <v-spacer></v-spacer>
           <v-dialog persistent max-width="500px" v-model="cardLogin">
-            <v-btn dark slot="activator">ENTRAR</v-btn>
+            <v-btn dark slot="activator" color="white">ENTRAR</v-btn>
             <v-card color="grey lighten-4">
               <v-container grid-list-md>
                 <v-layout wrap>
@@ -27,7 +27,7 @@
             </v-card>
           </v-dialog>
           <v-dialog persistent max-width="500px" v-model="cardCadastrar">
-            <v-btn dark slot="activator">Cadastrar</v-btn>
+            <v-btn dark slot="activator" color="white">Cadastrar</v-btn>
             <v-card color="grey lighten-4">
               <v-container grid-list-md>
                 <v-layout wrap>

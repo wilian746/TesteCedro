@@ -1,7 +1,7 @@
 <template>
   <v-layout column>
       <v-toolbar color="primary" dark>
-        <v-toolbar-title>Cedro Tech</v-toolbar-title>
+        <v-toolbar-title class="cedroTech">Cedro Tech</v-toolbar-title>
         <v-spacer></v-spacer>
         <v-dialog persistent max-width="500px" v-model="cardCadastroDeProduto">
             <v-btn dark color="white" slot="activator">CADASTRAR PRODUTO</v-btn>
@@ -48,7 +48,7 @@
             </v-card>
           </v-dialog>
         <v-spacer></v-spacer>
-        <v-btn @click="sairParaPaginaPrincipal()">
+        <v-btn color="white" @click="sairParaPaginaPrincipal() ">
           SAIR
         </v-btn>
       </v-toolbar>
