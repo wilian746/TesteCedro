@@ -5,11 +5,6 @@ const API_CadastroProduto = API_Produto + 'registroDeProduto/'
 
 export default {
   name: 'home',
-  drawer: true,
-  mounted: function () {
-    this.getProduto(),
-    console.log(this.$store.getters.getToken)
-  },
   data: () => ({
     transition: 'slide-y-reverse-transition',
     email: '',
@@ -34,61 +29,64 @@ export default {
     produtos: [],
     valorPagamento: '',
     tipoPagamento: '',
-    formaDePagamento:'',
-    parcelas:'',
-    resultado:''
-
+    formaDePagamento: '',
+    parcelas: 0,
+    resultado: 0,
+    produtoSelecionadoID: '',
+    descricaoProdutoSelecionado: '',
+    resultadoParcelado = 0
   }),
   props: ['imageSrc'],
   methods: {
-
-    guardarValoresPagamento (){
+    guardarValoresPagamento () {
       this.proximoRequisito = true
 
       let valores = {
-        valorPagamento : this.valorPagamento,
+        valorPagamento: this.valorPagamento,
         tipoPagamento: this.tipoPagamento,
         formaDePagamento: this.formaDePagamento,
         parcelas: parseFloat(this.parcelas)
       }
-      console.log(valores + 'proximo',proximoRequisito)
+      console.log(valores + 'proximo', this.proximoRequisito)
     },
 
-    guardarValoresPagamentoDeNovo (){
+    guardarValoresPagamentoDeNovo () {
       this.proximoRequisitoDeNovo = true
       let valores = {
-        valorPagamento : this.valorPagamento,
+        valorPagamento: this.valorPagamento,
         tipoPagamento: this.tipoPagamento,
         formaDePagamento: this.formaDePagamento,
         parcelas: parseFloat(this.parcelas)
       }
     },
-
-    comprarProdutoAprazo (){ 
-      let valores = {
-        valorPagamento : this.valorPagamento,
-        tipoPagamento: this.tipoPagamento,
-        formaDePagamento: this.formaDePagamento,
-        parcelas: parseFloat(this.parcelas)
+    getProdutoID (produtoID) {
+      this.produtoSelecionadoID = produtoID
+      this.trazerApenasUmProdutoDoBanco(produtoID)
+    },
+    comprarProdutoAprazo () {
+      let precoTotal = parseFloat(this.precoProdutoNovo)
+      let valorParcela = 0
+      let valorFinal = 0
+      
+      for(let i = this.parcelas ; i > 0; i--) {
+        valorParcela += precoTotal * 0.02
       }
-      this.produtos.preco += this.produtos.preco + (this.produtos.preco * 0.02)
-      this.resultado = this.produtos.preco
-      this.resultado = this.resultado / this.parcelas
-      return this.resultado
+
+      valorFinal = precoTotal + valorParcela
+
+      this.resultado = valorFinal.toFixed(2)
+      this.resultadoParcelado = (resultado / this.parcelas)
+      console.log('roda', this.resultado)
     },
 
-    comprarProdutoAvista (){ 
-      let valores = {
-        valorPagamento : this.valorPagamento,
-        tipoPagamento: this.tipoPagamento,
-        formaDePagamento: this.formaDePagamento,
-        parcelas: parseFloat(this.parcelas)
-      }
-      this.resultado = (this.valorPagamento - this.produtos.preco)
-      return this.resultado
+    comprarProdutoAvista () {
+      this.resultado = (this.valorPagamento - this.precoProdutoNovo)
+    },
+    comprarProdutoAvistaComDesconto () {
+      this.resultado = (this.precoProdutoNovo * 0.10) + precoProdutoNovo
     },
 
-    trazerApenasUmProdutoDoBanco(produtoID) {
+    trazerApenasUmProdutoDoBanco (produtoID) {
       let config = {
         headers: {
           'Content-Type': 'application/json',
@@ -96,15 +94,15 @@ export default {
         }
       }
       this.axios.get(API_Produto + produtoID, config).then((response) => {
-        this.produtos = response.data
-        console.log('respostea', response.data)
+        this.descricaoProdutoNovo = response.data.descricao
+        this.nomeProdutoNovo = response.data.nome
+        this.precoProdutoNovo = response.data.preco
       })
     },
 
     getProduto () {
       this.axios.get(API_Produto).then((response) => {
         this.produtos = response.data
-        console.log('produtos:',JSON.stringify(this.produtos))
       })
     },
 
@@ -131,15 +129,14 @@ export default {
           'Authorization': this.$store.getters.getToken
         }
       }
-      let credentials = JSON.stringify({
+      let novoProduto = JSON.stringify({
         'nome': this.nomeProduto,
         'descricao': this.descricaoProduto,
         'preco': parseFloat(this.precoProduto)
       })
 
-      this.axios.post(API_CadastroProduto, credentials, config).then((response) => {
-        console.log(response.data)
-        this.$router.push('/')
+      this.axios.post(API_CadastroProduto, novoProduto, config).then((response) => {
+        this.getProduto()
       }).catch(function (error) {
         console.log(error)
       })
@@ -153,46 +150,43 @@ export default {
         }
       }
       this.axios.delete(API_Produto + produtoID, config).then((response) => {
-        console.log(response.data.nomeProduto)
-        window.location.reload();
-        this.$router.push('/')
+        this.getProduto()
       })
-      
     },
 
-    updateProdutoDoBanco (produtoID) {
+    updateProdutoDoBanco () {
       let config = {
         headers: {
           'Content-Type': 'application/json',
           'Authorization': this.$store.getters.getToken
         }
       }
-      let credentials = JSON.stringify({
+      let produtoAtualizado = JSON.stringify({
         'nome': this.nomeProdutoNovo,
         'descricao': this.descricaoProdutoNovo,
         'preco': parseFloat(this.precoProdutoNovo)
       })
-      this.axios.put(API_Produto + produtoID, credentials,config).then((response) => {
-        console.log('Credentials:',credentials)
-        console.log( response.data)
-        this.$router.push('/')
+      this.axios.put(API_Produto + this.produtoSelecionadoID, produtoAtualizado, config).then((response) => {
+        this.getProduto()
       })
     },
 
-    previewThumbnail: function(event) {
-      var input = event.target;
+    previewThumbnail (event) {
+      var input = event.target
 
       if (input.files && input.files[0]) {
-        var reader = new FileReader();
+        var reader = new FileReader()
+        var vm = this
 
-        var vm = this;
-
-        reader.onload = function(e) {
-          vm.imageSrc = e.target.result;
+        reader.onload = function (e) {
+          vm.imageSrc = e.target.result
         }
 
-        reader.readAsDataURL(input.files[0]);
+        reader.readAsDataURL(input.files[0])
       }
     }
+  },
+  mounted () {
+    this.getProduto()
   }
 }

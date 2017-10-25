@@ -99,7 +99,7 @@
                 <span color="black" v-text="produto.preco"></span>
                 <v-spacer></v-spacer>
                 <v-dialog persistent max-width="500px" v-model="cardDialog">
-                  <v-btn fab dark small color="light-blue darken-1" slot="activator">
+                  <v-btn fab dark small color="light-blue darken-1" slot="activator" @click="getProdutoID(produto._id)">
                   <v-icon>gavel</v-icon>
                 </v-btn>
                   <v-card color="grey lighten-4">
@@ -113,7 +113,7 @@
                               </v-btn>
                             </v-card-actions>
                           <v-form>
-                            <p> O valor para você pagar é de R$ {{produto.preco}}</p>
+                            <p> O valor para você pagar é de R$ {{precoProdutoNovo}}</p>
                             <v-text-field label="Valor" placeholder="0.00" v-model="valorPagamento" required></v-text-field>
                             <v-text-field label="Tipo de Pagamento" placeholder="cartão ou dinheiro" v-model="tipoPagamento" required></v-text-field>
                             <div v-if="tipoPagamento !== 'cartão' && tipoPagamento !== 'dinheiro'">
@@ -146,25 +146,21 @@
                                   </div>
                                   <div v-if="parcelas !== ''">
                                     <v-btn block color="light-blue darken-1" @click="comprarProdutoAprazo()">Comprar</v-btn>
+                                    <p>O valor a pagar é: {{resultado}}</p>
+                                    <p>O valor de suas parcelas fixas é de: {{resultadoParcelado}}</p>
                                   </div>
                                 </div>
                             </div>
                             <br><br><br><br>
                             <div v-if="proximoRequisitoDeNovo === true && formaDePagamento === 'avista'">
                               <v-spacer></v-spacer>
-                              <v-btn block color="light-blue darken-1" @click="comprarProdutoAprazo()">Comprar</v-btn>
+                              <v-btn block color="light-blue darken-1" @click="comprarProdutoAvista()">Comprar</v-btn>
+                              <p>O valor do seu produto é: {{precoProdutoNovo}}</p>
+                              <p>Seu troco é: {{resultado}}</p>
                             </div>
-                            <div v-if="proximoRequisito === true && tipoPagamento === 'dinheiro'" comprarProdutoAvista()>
-                               <p> APRAZO{<br>
-                                  produto.preco += produto.preco + (produto.preco * 0.02)<br>
-                                  resultado = produto.preco<br>
-                                  resultado = resultado / parcelas<br>
-                               }
-                               </p>
-                              <p> AVISTA{<br>
-                                O valor a pagar é de {{produto.preco}} e seu troco foi de ({{valorPagamento}} - {{produto.preco}})<br>
-                              }
-                              </p>
+                            <div v-if="proximoRequisito === true && tipoPagamento === 'dinheiro'">
+                              <v-btn block color="light-blue darken-1" @click="comprarProdutoAvistaComDesconto()">Comprar</v-btn>
+                              <p>{{resultado}}</p>
                             </div>
                           </v-form>
                         </v-flex>
@@ -173,7 +169,7 @@
                   </v-card>
                 </v-dialog>
                 <v-dialog persistent max-width="500px" v-model="dialog">
-                  <v-btn fab dark small color="green" slot="activator">
+                  <v-btn fab dark small color="green" slot="activator" @click="getProdutoID(produto._id)">
                     <v-icon>edit</v-icon>
                   </v-btn>
                   <v-card color="grey lighten-4">
@@ -188,10 +184,10 @@
                             </v-card-actions>
                           <v-form>
                             <v-text-field label="Nome" v-model="nomeProdutoNovo" required>{{produto.nome}}</v-text-field>
-                            <v-text-field label="Descricao" v-model="descricaoProdutoNovo" required>{{produto.descricao}}</v-text-field>
+                            <v-text-field label="Descricao" v-model="descricaoProdutoNovo" required>{{descricaoProdutoSelecionado}}</v-text-field>
                             <v-text-field label="Preco" v-model="precoProdutoNovo" required>{{produto.preco}}</v-text-field>
                           </v-form>
-                          <v-btn block color="light-blue darken-1" block @click="updateProdutoDoBanco(produto._id)">Atualizar</v-btn>
+                          <v-btn block color="light-blue darken-1" block @click="updateProdutoDoBanco()">Atualizar</v-btn>
                         </v-flex>
                       </v-layout>
                     </v-container>
