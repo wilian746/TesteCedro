@@ -24,6 +24,7 @@ export default {
     proximoRequisitoDeNovo: false,
     cardDialog: false,
     cardCadastroDeProduto: false,
+    cardInfo: false,
     nomeProdutoNovo: '',
     descricaoProdutoNovo: '',
     precoProdutoNovo: 0,
@@ -40,6 +41,9 @@ export default {
   }),
   props: ['imageSrc'],
   methods: {
+    mostraDescricao(){
+
+    },
     guardarValoresPagamento () {
       this.proximoRequisito = true
 
@@ -97,6 +101,7 @@ export default {
         this.descricaoProdutoNovo = response.data.descricao
         this.nomeProdutoNovo = response.data.nome
         this.precoProdutoNovo = response.data.preco
+        this.linkImageNovo = response.data.foto
       })
     },
 
@@ -107,12 +112,12 @@ export default {
     },
 
     fazerLogin () {
-      let credentials = {
+      let parametrosDeLogin = {
         email: this.email,
         password: this.password
       }
 
-      this.axios.post(API_Login, credentials).then((response) => {
+      this.axios.post(API_Login, parametrosDeLogin).then((response) => {
         this.$store.commit('setToken', response.data.token)
         this.$router.push('/home')
       })
@@ -170,21 +175,6 @@ export default {
       this.axios.put(API_Produto + this.produtoSelecionadoID, produtoAtualizado, config).then((response) => {
         this.getProduto()
       })
-    },
-
-    previewThumbnail (event) {
-      var input = event.target
-
-      if (input.files && input.files[0]) {
-        var reader = new FileReader()
-        var vm = this
-
-        reader.onload = function (e) {
-          vm.imageSrc = e.target.result
-        }
-
-        reader.readAsDataURL(input.files[0])
-      }
     }
   },
   mounted () {

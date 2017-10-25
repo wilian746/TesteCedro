@@ -85,14 +85,46 @@
                 <v-container fill-height fluid>
                   <v-layout fill-height>
                     <v-flex xs12 align-end flexbox>
-                      <span color="black" v-text="produto.nome" @click="trazerApenasUmProdutoDoBanco(produto._id)"></span>
+                      <span color="black" v-text="produto.nome"></span>
                     </v-flex>
                   </v-layout>
                 </v-container>
               </v-card-media>
               <v-card-actions class="white">
-                <span color="black" v-text="produto.preco"></span>
+                <span color="black" v-text="'R$' + produto.preco"></span>
                 <v-spacer></v-spacer>
+                <v-dialog persistent max-width="500px" v-model="cardInfo">
+                  <v-btn fab dark small color="grey darken-1" slot="activator" @click="getProdutoID(produto._id)">
+                    <v-icon>info</v-icon>
+                  </v-btn>
+                  <v-card color="grey lighten-4">
+                    <v-container grid-list-md>
+                      <v-layout wrap>
+                        <v-flex xs12 >
+                            <v-card-actions>
+                              <v-spacer></v-spacer>
+                              <v-btn fab dark small color="red" top right @click.native="cardInfo = false">
+                                <v-icon>close</v-icon>
+                              </v-btn>
+                            </v-card-actions>
+                          <v-form>
+                            <p>{{nomeProdutoNovo}}</p>
+                            <p>{{descricaoProdutoNovo}}</p>
+                            <p>{{precoProdutoNovo}}</p>
+                            <v-card-media :src="linkImageNovo" height="300px">
+                              <v-container fill-height fluid>
+                                <v-layout fill-height>
+                                  <v-flex xs12 align-end flexbox>
+                                  </v-flex>
+                                </v-layout>
+                              </v-container>
+                            </v-card-media>
+                          </v-form>
+                        </v-flex>
+                      </v-layout>
+                    </v-container>
+                  </v-card>
+                </v-dialog>
                 <v-dialog persistent max-width="500px" v-model="cardDialog">
                   <v-btn fab dark small color="light-blue darken-1" slot="activator" @click="getProdutoID(produto._id)">
                   <v-icon>gavel</v-icon>
